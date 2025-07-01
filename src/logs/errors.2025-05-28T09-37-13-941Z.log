@@ -1,0 +1,16 @@
+ID: eaf6a4c3-7caa-4c96-9647-9ed86cc4d343 | Time: 2025-05-28T09:37:13.853Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: 230e5ecd-6d8a-4a8f-af7d-0a42d3dc214d | Time: 2025-05-28T09:38:10.689Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: 9eb7a0ec-ce49-4164-990c-5b3030f74fc8 | Time: 2025-05-28T09:41:53.954Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: 25eef77e-c726-42ea-ad88-58d49e4e3f52 | Time: 2025-05-28T09:42:06.531Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: b7700b5f-624e-4aef-8d52-096c9882c4fa | Time: 2025-05-28T09:46:05.923Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: 6e9e8b17-bdc2-40a4-ba9b-688b771d5e6b | Time: 2025-05-28T09:48:01.012Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: 5141f7ed-0dac-49a9-b454-a3deac12ceed | Time: 2025-05-28T09:50:11.939Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: 1afee82d-0a29-426e-ace8-332d1345dbb3 | Time: 2025-05-28T09:50:47.902Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: aaafd55f-2ccb-4454-9029-b5cd4378ee23 | Time: 2025-05-28T10:06:53.689Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'property')
+ID: 05eaaebc-f4ca-48ba-a342-5738e807f8c4 | Time: 2025-06-13T07:55:29.037Z | Name: Error | Cause: Lỗi test!
+ID: b0589cee-f963-4483-a0bb-e5a88f69be14 | Time: 2025-06-13T07:56:06.320Z | Name: Error | Cause: Lỗi test!
+ID: 47634d7d-d54a-4aa3-a4c8-edb528922826 | Time: 2025-06-13T07:56:07.283Z | Name: Error | Cause: Lỗi test!
+ID: 7ca6817d-aa6e-434c-99fc-3f861e18ac2c | Time: 2025-06-13T07:56:08.207Z | Name: Error | Cause: Lỗi test!
+ID: 07d14ecf-8bc4-4874-bce6-9b93e84cbd98 | Time: 2025-06-29T02:34:17.825Z | Name: ReferenceError | Cause: UserNull is not defined
+ID: 62cbf8f3-a13a-40da-9673-b0b90fb20069 | Time: 2025-06-29T02:37:48.765Z | Name: ReferenceError | Cause: UserNull is not defined
+ID: e9d1c2bf-35a6-4be6-9ed5-ea7a124d28d5 | Time: 2025-06-29T02:37:51.189Z | Name: ReferenceError | Cause: UserNull is not defined
