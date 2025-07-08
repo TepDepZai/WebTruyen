@@ -24,6 +24,8 @@ export interface User {
 
 // Phản hồi từ API đăng nhập
 export interface LoginResponse {
+  success: boolean;
+  message: string;
   token: string;
   refreshToken?: string;
   user: User;

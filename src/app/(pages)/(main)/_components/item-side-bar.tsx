@@ -1,70 +1,39 @@
 import { cn } from "@/lib/utils";
-import { CircleAlert, Home } from "lucide-react";
+import { Home, Flame, Heart, Clock } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
+const sidebarItems = [
+  { title: "Home", href: "/", icon: <Home className="w-5 h-5" /> },
+  { title: "Hot", href: "/Hot", icon: <Flame className="w-5 h-5" /> },
+  { title: "Follow", href: "/Follow", icon: <Heart className="w-5 h-5" /> },
+  { title: "History", href: "/History", icon: <Clock className="w-5 h-5" /> },
+];
+
 const ItemsSideBar = () => {
-  const sidebar = [
-    {
-      Title: "Schedule Web",
-      Icon: CircleAlert,
-      Items: [
-        {
-          title: "Abou Us",
-          href: "/about",
-        },
-        {
-          title: "Site Rules",
-          href: "/rules",
-        },
-        {
-          title: "Announcements",
-          href: "/announcements",
-        },
-      ],
-    },
-  ];
-
   const router = useRouter();
-  const pathname = usePathname()
-  const isHome = (pathname === "/")
-
+  const pathname = usePathname();
   return (
-    <div className="flex flex-col w-[90%] h-full mx-auto">
-      <div
-        onClick={() => router.push("/")}
-        className="text-white p-2 cursor-pointer"
-      >
-        <p
-          className={cn(
-            "flex items-center text-lg hover:bg-violet-600/65 font-bold rounded-sm transition-all ease-in-out duration-300",
-            isHome && "bg-yellow-500 w-full p-0.5 hover:bg-yellow-600"
-          )}
-        >
-          <Home className="w-6 h-6 mr-1" /> Home
-        </p>
-      </div>
-
-      {sidebar.map((si_item) => (
-        <div key={si_item.Title} className="text-white p-2 flex flex-col">
-          <p className="flex items-center text-lg font-bold select-none pb-2">
-            <si_item.Icon className="w-6 h-6 mr-1" /> {si_item.Title}
-          </p>
-
-          {si_item.Items.map((item) => (
-            <div
-              key={item.title}
-              className={cn(
-                "cursor-pointer text-base hover:bg-violet-600/65 rounded-md mb-1 transition-all ease-in-out duration-300",
-                pathname === item.href || pathname?.startsWith(`${item.href}/`) && "bg-yellow-500 w-full p-0.5 hover:bg-yellow-700"
-              )}
-              onClick={() => router.push(item.href)}
-            >
-              <p className="pl-2">{item.title}</p>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    <nav className="flex flex-col w-[90%] h-full mx-auto pt-8 space-y-2">
+      {sidebarItems.map((item) => {
+        const isActive =
+          pathname === item.href || pathname.startsWith(`${item.href}/`);
+        return (
+          <div
+            key={item.href}
+            onClick={() => router.push(item.href)}
+            className={cn(
+              "flex items-center gap-3 px-5 py-3 rounded-lg font-semibold text-base cursor-pointer transition-colors",
+              isActive
+                ? "bg-teal-400 text-white shadow hover:bg-teal-500"
+                : "text-white hover:bg-violet-600/65"
+            )}
+          >
+            {item.icon}
+            <span>{item.title}</span>
+          </div>
+        );
+      })}
+    </nav>
   );
 };
 
