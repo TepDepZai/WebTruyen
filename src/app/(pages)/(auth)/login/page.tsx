@@ -17,6 +17,9 @@ const LoginPage = () => {
     const PwNull = submitted && password.trim() === "";
 
     const handleLogin = async () => {
+        console.log("Identifier:", `"${identifier}"`, identifier.length);
+        console.log("Password:", `"${password}"`, password.length);
+        console.log("Đăng nhập thành công:", typeof password, identifier);
         setsubmitted(true);
         if (!password || !identifier) {
             setError("Vui lòng nhập đầy đủ thông tin.");
@@ -24,8 +27,8 @@ const LoginPage = () => {
         }
         try {
             const res = await login({
-                identifier,
-                password
+                identifier: identifier.trim(),
+                password: password.trim()
             });
             if (res.success) {
                 router.push("/");
@@ -35,14 +38,10 @@ const LoginPage = () => {
         } catch (error: any) {
             console.error(error);
 
-            if (error.response?.status === 403) {
-                setError("Bạn không có quyền truy cập hoặc tài khoản bị khóa.");
-            } else if (error.response?.status === 401) {
-                setError("Sai tài khoản hoặc mật khẩu.");
-            } else if (error.response?.status === 500) {
-                setError("Lỗi server. Vui lòng thử lại sau.");
+            if (error.response && error.response.data) {
+                setError(error.response.data.message || "Đã xảy ra lỗi khi đăng nhập.");
             } else {
-                setError("Có lỗi xảy ra. Vui lòng thử lại.");
+                setError("Đã xảy ra lỗi khi đăng nhập.");
             }
         }
     }
@@ -82,6 +81,7 @@ const LoginPage = () => {
                                 id="username"
                                 type="text"
                                 placeholder="Enter your username"
+
                                 className="w-full border border-gray-300 p-2 rounded-md"
                                 onChange={(e) => setidentifier(e.target.value)}
                             />
@@ -89,7 +89,15 @@ const LoginPage = () => {
                         <div>
                             <label htmlFor="password" className={`${PwNull ? "block mb-1 text-red-500" : "block mb-1"}`}
                             >Password</label>
-                            <InputSomeThing onChange={(e) => setPassword(e.target.value)} />
+                            <div className="relative">
+                                <input
+                                    type="password"
+                                    className="w-full border border-gray-300 p-2 rounded-md"
+                                    placeholder="Enter password"
+                                    value={password} // 👈 BẮT BUỘC
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
                         </div>
                     </div>
 

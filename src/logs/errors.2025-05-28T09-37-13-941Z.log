@@ -45,3 +45,8 @@ ID: 28bd5138-79d2-41c7-a8db-a4f9f5d9540f | Time: 2025-07-03T11:41:56.771Z | Name
 ID: 01e3a17f-f01f-4f57-ab74-5284bc0e8441 | Time: 2025-07-03T11:46:51.547Z | Name: ReferenceError | Cause: React is not defined
 ID: 1afb20a4-747f-4a9e-a85c-dc2a2969a592 | Time: 2025-07-03T11:47:52.312Z | Name: ReferenceError | Cause: React is not defined
 ID: 8f532fed-7d0b-4ade-aa2c-9aeb1af5ef1c | Time: 2025-07-03T11:48:35.790Z | Name: ReferenceError | Cause: AutoPlay is not defined
+ID: 553393ba-1263-4144-ac8d-7fc05e0434e4 | Time: 2025-07-09T09:34:55.332Z | Name: ReferenceError | Cause: ChevronLeft is not defined
+ID: 2304dc29-3b7c-4a29-a9ec-64fbcbb89de9 | Time: 2025-07-09T09:36:25.517Z | Name: ReferenceError | Cause: useRouter is not defined
+ID: 9d2da1e0-a90b-40ba-8264-b2b0a6442968 | Time: 2025-07-09T09:36:41.574Z | Name: ReferenceError | Cause: useRouter is not defined
+ID: f9dac46e-10b9-4db2-8a7c-e02ae27d1ef2 | Time: 2025-07-09T11:20:49.224Z | Name: ReferenceError | Cause: onChange is not defined
+ID: 058044cc-11c0-49f2-a45e-5e7109302bcb | Time: 2025-07-11T02:46:08.361Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'avatar')

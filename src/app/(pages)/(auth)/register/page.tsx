@@ -36,7 +36,7 @@ const RegisterPage = () => {
                 userName,
                 password,
                 fullName,
-                email
+                email,
             });
             if (res.success) {
 
@@ -51,8 +51,8 @@ const RegisterPage = () => {
             <h1 className="text-4xl font-bold p-6">Paper Point</h1>
             <div className="flex-grow flex items-center justify-center">
                 <form className="bg-white w-[450px] rounded-lg shadow-lg p-8" onSubmit={(e) => {
-                    e.preventDefault();  // ✅ chặn reload mặc định
-                    handleRegister();    // ✅ gọi hàm đăng ký
+                    e.preventDefault();
+                    handleRegister();
                 }}>
                     <h2 className="text-xl font-bold text-center mb-6">Create your account</h2>
                     <div className="flex flex-col gap-3 mb-4">

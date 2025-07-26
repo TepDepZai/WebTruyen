@@ -10,15 +10,18 @@ export interface RegisterData {
   password: string;
   userName: string;
   fullName?: string;
+  avatar?: string; // URL hoặc base64 của ảnh đại diện, nếu có
+  role?: string; // Vai trò của người dùng, nếu cần
 }
 
 // Thông tin người dùng trả về sau khi đăng nhập
 export interface User {
   id: string;
   email: string;
+  userName: string;
   fullName?: string;
   role?: string;
-  createdAt?: string;
+  avatar?: string;
   updatedAt?: string;
 }
 
