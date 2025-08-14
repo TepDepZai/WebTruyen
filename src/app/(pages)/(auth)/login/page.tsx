@@ -1,10 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import InputSomeThing from "../components/inputsomething";
+import {  useState } from "react";
 import ToolTip from "../components/tooltip";
 import { login } from "@/services/authService";
-import LoadingPage from "../../_components/loading";
+import useToastState from "../../_components/hook/useToast";
 
 const LoginPage = () => {
     const [loading, setLoading] = useState(false);
@@ -15,14 +14,16 @@ const LoginPage = () => {
     const [submitted, setsubmitted] = useState(false);
     const UserNull = submitted && identifier.trim() === "";
     const PwNull = submitted && password.trim() === "";
-
+    const { setToast } = useToastState();
+    
     const handleLogin = async () => {
-        console.log("Identifier:", `"${identifier}"`, identifier.length);
-        console.log("Password:", `"${password}"`, password.length);
-        console.log("Đăng nhập thành công:", typeof password, identifier);
         setsubmitted(true);
         if (!password || !identifier) {
-            setError("Vui lòng nhập đầy đủ thông tin.");
+            setToast({
+                title: "Login Failed",
+                message: "Please enter your username and password.",
+                variant: "error",
+            });
             return;
         }
         try {
@@ -33,11 +34,13 @@ const LoginPage = () => {
             if (res.success) {
                 router.push("/");
             } else {
-                setError("Sai tài khoản hoặc mật khẩu.");
+               setToast({
+                title: "Login Failed",
+                message: "Please enter your username and password.",
+                variant: "error",
+            });
             }
         } catch (error: any) {
-            console.error(error);
-
             if (error.response && error.response.data) {
                 setError(error.response.data.message || "Đã xảy ra lỗi khi đăng nhập.");
             } else {

@@ -1,189 +1,232 @@
 "use client";
 
-import { getCurrentUser, updateUser as updateUserService, changePassword as changePasswordService } from "@/services/authService";
-import { ChevronLeft } from "lucide-react";
+import { getCurrentUser } from "@/services/authService";
+import { updateUser, changePassword } from "@/services/profileService";
+import { ChevronLeft, Camera } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProfileMain = () => {
-    const defaultUser = {
-        name: "",
-        email: "",
-        avatar: "./avataaars.svg",
-        joinDate: "",
-        readingStats: {
-            totalRead: 0,
-            favorites: 0,
-            currentlyReading: 0
+  const defaultUser = {
+    name: "",
+    email: "",
+    avatar: "./avataaars.svg",
+    joinDate: "",
+    readingStats: { totalRead: 0, favorites: 0, currentlyReading: 0 },
+    role: ""
+  };
+
+  const [user, setUser] = useState(defaultUser);
+  const [isEditing, setIsEditing] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await getCurrentUser();
+        if (res.success) {
+          const data = res.user;
+          setUser({
+            name: data.fullName || data.userName || "null",
+            email: data.email || "null",
+            avatar: data.avatar || "./avataaars.svg",
+            joinDate: data.createdAt
+              ? new Date(data.createdAt).toLocaleDateString("vi-VN", {
+                  month: "long",
+                  year: "numeric"
+                })
+              : "null",
+            readingStats: {
+              totalRead: data.totalRead || 0,
+              favorites: data.favorites || 0,
+              currentlyReading: data.currentlyReading || 0
+            },
+            role: data.role || "Null"
+          });
         }
+      } catch (error) {
+        console.error("Lỗi khi lấy thông tin user:", error);
+      }
     };
-    const [user, setUser] = useState(defaultUser);
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const res = await getCurrentUser();
-                if (res.success) {
-                    const data = res.user;
-                    setUser({
-                        name: data.fullName || data.userName || "Chưa có tên",
-                        email: data.email || "",
-                        avatar: data.avatar || "./avataaars.svg",
-                        joinDate: data.createdAt ? new Date(data.createdAt).toLocaleDateString("vi-VN", {
-                            month: 'long',
-                            year: 'numeric'
-                        }) : "Chưa rõ",
-                        readingStats: {
-                            totalRead: data.totalRead || 0,
-                            favorites: data.favorites || 0,
-                            currentlyReading: data.currentlyReading || 0
-                        }
-                    });
-                } else {
-                    console.error("Failed to fetch user data");
-                }
-            } catch (error: any) {
-                console.error("Lỗi khi lấy thông tin user:", error);
-            }
-        };
-        checkAuth();
-    }, []);
-    const updateUser = async () => {
-        try {
-            const res = await updateUserService({ fullName: user.name.trim() });
-            if (res.success) {
-                setIsEditing(false);
-                setUser((prev) => ({
-                    ...prev,
-                    name: res.user.fullName,
-                }));
-            } else {
-                console.error("Failed to update user data");
-            }
-        } catch (error) {
-            console.error("Lỗi khi cập nhật thông tin user:", error);
-        }
-    };
-    const changePassword = async () => {
-        try {
-            const res = await changePasswordService({ oldPassword, newPassword });
-            if (res.success) {
-                alert("Password changed successfully!");
-            } else {
-                console.error("Failed to change password:", res.message);
-            }
-        } catch (error) {
-            console.error("Lỗi khi đổi mật khẩu:", error);
-        }
+    fetchUser();
+  }, []);
+
+  const handleUpdateUser = async () => {
+    try {
+      const res = await updateUser({ fullName: user.name.trim() });
+      if (res.success) {
+        setIsEditing(false);
+        setUser((prev) => ({ ...prev, name: res.user.fullName }));
+      }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật user:", error);
     }
-    const [isEditing, setIsEditing] = useState(false);
-    const router = useRouter();
-    const [oldPassword, setOldPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+  };
+
+  const handleChangePassword = async () => {
+    try {
+      const res = await changePassword({ oldPassword, newPassword });
+      if (res.success) {
+        alert("Password changed successfully!");
+        setOldPassword("");
+        setNewPassword("");
+      }
+    } catch (error) {
+      console.error("Lỗi khi đổi mật khẩu:", error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+      {/* Back button */}
+      <button
+        onClick={() => router.push("/")}
+        className="flex items-center gap-2 mb-6 border border-blue-200 px-4 py-2 rounded-xl bg-white shadow-sm hover:shadow-md transition"
+      >
+        <ChevronLeft /> Back to Menu
+      </button>
+
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Profile Card */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col md:flex-row gap-8">
+          {/* Avatar */}
+          <div className="relative group">
+            <img
+              src={user.avatar}
+              alt="Avatar"
+              className="w-32 h-32 rounded-full border-4 border-blue-200 shadow-md object-cover"
+            />
             <button
-                className="flex fixed border-2 p-3 rounded-2xl bg-blue-100 shadow-[0_0_8px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_0_12px_rgba(239,68,68,0.7)] hover:border-amber-200"
-                onClick={() => router.push('/')}
+              title="Edit avatar"
+              className="absolute bottom-0 right-0 p-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition"
             >
-                <ChevronLeft /> Back to Menu
+              <Camera size={16} />
             </button>
-            <div className="max-w-4xl mx-auto">
-                <div className="bg-white rounded-2xl shadow-xl p-8 mb-6">
-                    <div className="flex flex-col md:flex-row items-center gap-8">
-                        <div className="relative">
-                            <img
-                                src={user.avatar}
-                                alt="Profile Avatar"
-                                className="w-32 h-32 rounded-full border-4 border-blue-200 shadow-lg object-cover"
-                            />
-                            <button
-                                className="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full shadow-lg transition-colors"
-                                title="Edit avatar"
-                                aria-label="Edit avatar"
-                            >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div className="flex-1 text-center md:text-left">
-                            <h1 className="text-3xl font-bold text-gray-800 mb-2">{user.name}</h1>
-                            <p className="text-gray-600 mb-2">{user.email}</p>
-                            <p className="text-sm text-gray-500 mb-4">Created account on {user.joinDate}</p>
-                            <div className="flex flex-col sm:flex-row gap-3">
-                                <button
-                                    onClick={() => {
-                                        if (isEditing) {
-                                            updateUser();
-                                        } else {
-                                            setIsEditing(true);
-                                        }
-                                    }}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-xl transition-colors"
-                                >
-                                    {isEditing ? "Save changes" : "Edit Profile"}
-                                </button>
-                                <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-2 rounded-xl transition-colors"
-                                    onClick={() => changePassword()}
-                                >
-                                    Change password
-                                </button>
-                                <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl transition-colors">
-                                    Upload
-                                </button>
-                            </div>
-                            <div className=" block p-3">
-                                <label className="p-2">Old Password: <input onChange={(e) => setOldPassword(e.target.value)} className="border-b" type="password" /></label>
-                                <label className="p-2">New Password: <input onChange={(e) => setNewPassword(e.target.value)} className="border-b" type="password" /></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-white rounded-2xl shadow-xl p-8">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6">Profile</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">User Name</label>
-                            {isEditing ? (
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    <input
-                                        type="text"
-                                        value={user.name}
-                                        onChange={(e) => setUser({ ...user, name: e.target.value })}
-                                        className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="User Name"
-                                    />
-                                </label>
-                            ) : (
-                                <div className="p-3 bg-gray-50 rounded-xl text-gray-800">{user.name}</div>
-                            )}
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                            <div className="p-3 bg-gray-50 rounded-xl text-gray-800">{user.email}</div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-6">Reading Statistics</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div className="bg-blue-50 p-6 rounded-xl shadow-lg text-center">
-                            <h3 className="text-xl font-semibold text-blue-600 mb-2">Total chapters</h3>
-                            <p className="text-3xl font-bold text-gray-800">{user.readingStats.totalRead}</p>
-                        </div>
-                        <div className="bg-green-50 p-6 rounded-xl shadow-lg text-center">
-                            <h3 className="text-xl font-semibold text-green-600 mb-2">Favourite</h3>
-                            <p className="text-3xl font-bold text-gray-800">{user.readingStats.favorites}</p>
-                        </div>
-                        <div className="bg-yellow-50 p-6 rounded-xl shadow-lg text-center">
-                            <h3 className="text-xl font-semibold text-yellow-600 mb-2">Reading</h3>
-                            <p className="text-3xl font-bold text-gray-800">{user.readingStats.currentlyReading}</p>
-                        </div>
-                    </div>
-                </div>
+          </div>
+
+          {/* Info */}
+          <div className="flex-1 space-y-3">
+            {isEditing ? (
+              <input
+                type="text"
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+                className="text-3xl font-bold text-gray-800 border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                placeholder="Enter your name"
+                title="Name"
+              />
+            ) : (
+              <h1 className="text-3xl font-bold text-gray-800">{user.name}</h1>
+            )}
+            <p className="text-gray-600">{user.email}</p>
+            <p className="text-sm text-gray-500">
+              Created account on {user.joinDate}
+            </p>
+
+            {/* Buttons */}
+            <div className="flex flex-wrap gap-3 pt-2">
+              <button
+                onClick={() =>
+                  isEditing ? handleUpdateUser() : setIsEditing(true)
+                }
+                className="px-5 py-2 rounded-xl bg-blue-500 text-white hover:bg-blue-600 transition"
+              >
+                {isEditing ? "Save changes" : "Edit Profile"}
+              </button>
+              <button
+                onClick={handleChangePassword}
+                className="px-5 py-2 rounded-xl bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
+              >
+                Change password
+              </button>
+              <button
+                onClick={() => router.push("/book")}
+                className="px-5 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition"
+              >
+                Upload
+              </button>
             </div>
+
+            {/* Password Fields */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <input
+                type="password"
+                placeholder="Old password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                className="flex-1 p-2 border border-gray-300 rounded-lg"
+              />
+              <input
+                type="password"
+                placeholder="New password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="flex-1 p-2 border border-gray-300 rounded-lg"
+              />
+            </div>
+          </div>
         </div>
-    );
+
+        {/* Extra Info */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Role
+            </label>
+            <div className="p-3 bg-gray-50 rounded-xl">{user.role}</div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <div className="p-3 bg-gray-50 rounded-xl">{user.email}</div>
+          </div>
+        </div>
+
+        {/* Reading Stats */}
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            Reading Statistics
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Total chapters",
+                value: user.readingStats.totalRead,
+                color: "blue"
+              },
+              {
+                title: "Favourite",
+                value: user.readingStats.favorites,
+                color: "green"
+              },
+              {
+                title: "Reading",
+                value: user.readingStats.currentlyReading,
+                color: "yellow"
+              }
+            ].map((stat, i) => (
+              <div
+                key={i}
+                className={`bg-${stat.color}-50 p-6 rounded-xl shadow text-center`}
+              >
+                <h3
+                  className={`text-xl font-semibold text-${stat.color}-600 mb-2`}
+                >
+                  {stat.title}
+                </h3>
+                <p className="text-3xl font-bold text-gray-800">
+                  {stat.value}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ProfileMain;

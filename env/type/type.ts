@@ -24,6 +24,22 @@ export interface User {
   avatar?: string;
   updatedAt?: string;
 }
+export interface Book {
+  title: string;
+  img: string;
+  tags: string;
+  content: string;
+  author: string;
+}
+export interface BookForId {
+  id: string;
+  title: string;
+  img: string;
+  tags: string;
+  content: string;
+  createdByName: string;
+  author: string;
+}
 
 // Phản hồi từ API đăng nhập
 export interface LoginResponse {
@@ -38,4 +54,10 @@ export interface LoginResponse {
 export interface RegisterResponse {
   message: string;
   user: User;
+}
+export interface BookMainPage {
+  id: string;
+  title: string;
+  img: string;
+
 }

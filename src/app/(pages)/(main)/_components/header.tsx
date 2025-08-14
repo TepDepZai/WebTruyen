@@ -88,23 +88,28 @@ const Header = () => {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-
-            {/* Search bar */}
             <div className="flex items-center flex-grow max-w-lg mx-6 rounded-2xl bg-white/90 shadow-inner overflow-hidden border border-gray-200">
                 <input
                     type="search"
                     placeholder="Search..."
                     className="flex-grow px-4 py-2 focus:outline-none text-black bg-transparent placeholder-gray-500"
                 />
-                <button className="px-4 py-3 hover:bg-blue-200 transition">
+                <button
+                    className="px-4 py-3 hover:bg-blue-200 transition"
+                    aria-label="Search"
+                    title="Search"
+                >
                     <Search size={20} className="" />
                 </button>
             </div>
 
-            {/* Account Dropdown */}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <button className="p-2 rounded-full hover:bg-white/10 text-white transition flex items-center">
+                    <button
+                        className="p-2 rounded-full hover:bg-white/10 text-white transition flex items-center"
+                        title="Account menu"
+                        aria-label="Account menu"
+                    >
                         <EllipsisVertical size={22} />
                     </button>
                 </DropdownMenuTrigger>
