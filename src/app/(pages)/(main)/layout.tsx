@@ -6,10 +6,8 @@ import Rollbar from "./_components/rollbar";
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-[#e0e7ff] to-[#f8fafc] ">
-      {/* Header */}
       <Header />
 
-      {/* Rollbar */}
       <div className="px-4 mt-2">
         <Rollbar />
       </div>
