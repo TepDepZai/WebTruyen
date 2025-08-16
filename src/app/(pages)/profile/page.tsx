@@ -5,6 +5,7 @@ import { updateUser, changePassword } from "@/services/profileService";
 import { ChevronLeft, Camera } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import useToastState from "../_components/hook/useToast";
 
 const ProfileMain = () => {
   const defaultUser = {
@@ -21,37 +22,51 @@ const ProfileMain = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await getCurrentUser();
-        if (res.success) {
-          const data = res.user;
-          setUser({
-            name: data.fullName || data.userName || "null",
-            email: data.email || "null",
-            avatar: data.avatar || "./avataaars.svg",
-            joinDate: data.createdAt
-              ? new Date(data.createdAt).toLocaleDateString("vi-VN", {
-                  month: "long",
-                  year: "numeric"
-                })
-              : "null",
-            readingStats: {
-              totalRead: data.totalRead || 0,
-              favorites: data.favorites || 0,
-              currentlyReading: data.currentlyReading || 0
-            },
-            role: data.role || "Null"
-          });
-        }
-      } catch (error) {
-        console.error("Lỗi khi lấy thông tin user:", error);
-      }
-    };
-    fetchUser();
-  }, []);
+  const { setToast } = useToastState();
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const res = await getCurrentUser();
+      if (!res.success) {
+        console.log("Failed to fetch user data:", res.message);
+        setToast({
+          title: "Error",
+          message: res.message || "You need to login to your account.",
+          variant: "error",
+        });
+        router.push("/login");
+      } else {
+        const data = res.user;
+        setUser({
+          name: data.fullName || data.userName || "null",
+          email: data.email || "null",
+          avatar: data.avatar || "./avataaars.svg",
+          joinDate: data.createdAt
+            ? new Date(data.createdAt).toLocaleDateString("vi-VN", {
+                month: "long",
+                year: "numeric"
+              })
+            : "null",
+          readingStats: {
+            totalRead: data.totalRead || 0,
+            favorites: data.favorites || 0,
+            currentlyReading: data.currentlyReading || 0
+          },
+          role: data.role || "Null"
+        });
+      } 
+    } catch (error) {
+      console.error("Lỗi khi lấy thông tin user:", error);
+      setToast({
+        title: "Error",
+        message: "Có lỗi khi lấy thông tin user.",
+        variant: "error",
+      });
+      router.push("/login");
+    }
+  };
+  fetchUser();
+}, []);
 
   const handleUpdateUser = async () => {
     try {
@@ -67,9 +82,21 @@ const ProfileMain = () => {
 
   const handleChangePassword = async () => {
     try {
+      if (!oldPassword || !newPassword) {
+        setToast({
+          title: "Error",
+          message: "Please fill in both password fields.",
+          variant: "error",
+        });
+        return;
+      }
       const res = await changePassword({ oldPassword, newPassword });
       if (res.success) {
-        alert("Password changed successfully!");
+        setToast({
+          title: "Success",
+          message: "Password changed successfully!",
+          variant: "success",
+        });
         setOldPassword("");
         setNewPassword("");
       }

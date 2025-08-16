@@ -5,7 +5,7 @@ import { createBook, deleteBook, getAllBooks, getBookById, updateBook } from "@/
 import Card from "./componants/card";
 import { BookForId, } from "../../../../env/type/type";
 import UploadForm from "./componants/form";
-import { useRouter } from "next/dist/client/components/navigation";
+import { useRouter, useSearchParams } from "next/dist/client/components/navigation";
 import { ChevronLeft } from "lucide-react";
 import useToastState from "../_components/hook/useToast";
 import { AppAlertDialog } from "../_components/alertDialog";
@@ -23,6 +23,8 @@ const UpLoad = () => {
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
   const { alertDialogProps, setAlertDialogProps } = useAlertDialog();
 
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const router = useRouter();
   const { setToast } = useToastState();
   const handleUpload = async () => {
@@ -53,34 +55,40 @@ const UpLoad = () => {
       return;
     }
   };
-  const handleDelete = (id: string) => {
-  setAlertDialogProps({
-    title: "Xác nhận xóa",
-    description: "Bạn có chắc chắn muốn xóa sách này?",
-    submitText: "Xóa",
-    onSubmit: async () => {
-      try {
-        await deleteBook(id);
-        setDataBooks((prev) => prev.filter((book) => book.id !== id));
-        setToast({
-          title: "Delete Successful",
-          message: "Your book has been deleted successfully!",
-          variant: "success",
-        });
-      } catch (error) {
-        setToast({
-          title: "Delete Failed",
-          message: "There was an error deleting your book. Please try again.",
-          variant: "error",
-        });
-      }
-    },
-    open: true,
-    setOpen: setOpenAlertDialog,
-  });
+  useEffect(() => {
+    if (id) {
+      handleGetById(id);
+    }
+  }, [id]);
 
-  setOpenAlertDialog(true);
-};
+
+  const handleDelete = (id: string) => {
+    setAlertDialogProps({
+      title: "Xác nhận xóa",
+      description: "Bạn có chắc chắn muốn xóa sách này?",
+      submitText: "Xóa",
+      onSubmit: async () => {
+        try {
+          await deleteBook(id);
+          setDataBooks((prev) => prev.filter((book) => book.id !== id));
+          setToast({
+            title: "Delete Successful",
+            message: "Your book has been deleted successfully!",
+            variant: "success",
+          });
+        } catch (error) {
+          setToast({
+            title: "Delete Failed",
+            message: "There was an error deleting your book. Please try again.",
+            variant: "error",
+          });
+        }
+      },
+      open: true,
+      setOpen: setOpenAlertDialog,
+    });
+    setOpenAlertDialog(true);
+  };
 
   const handleUpdate = async (id: string) => {
     try {
@@ -112,10 +120,13 @@ const UpLoad = () => {
   const handleSubmitUpdate = async () => {
     if (!currentBookId) return;
     await handleUpdate(currentBookId);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("id");
+    router.push(`/book?${params.toString()}`, { scroll: false });
   };
   const handleGetById = async (id: string) => {
     try {
-      const res = await getBookById(id); 
+      const res = await getBookById(id);
       const book = res?.paperPoint;
       if (!book) return;
       setCurrentBookId(book.id || id);
@@ -125,6 +136,9 @@ const UpLoad = () => {
       setSelectedTag(book.tags?.[0] || "");
       setContent(book.content || "");
       setIsUpdate(true);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("id", book.id || id);
+      router.push(`/book?${params.toString()}`, { scroll: false });
     } catch (error) {
       setToast({
         title: "Fetch Failed",
@@ -148,6 +162,15 @@ const UpLoad = () => {
     };
     fetchBooks();
   }, []);
+
+  const handleCancelUpdate = () => {
+    setIsUpdate(false);
+    handleClear();
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("id");
+    router.push(`/book?${params.toString()}`, { scroll: false });
+  };
+
   return (
     <div className="flex flex-col items-center min-h-screen  p-6">
       <div className="flex justify-start w-full mb-6">
@@ -179,7 +202,7 @@ const UpLoad = () => {
           <div >
             <div className="flex justify-end mb-4">
               <button
-                onClick={() => { setIsUpdate(false), handleClear() }}
+                onClick={() => { handleCancelUpdate() }}
                 className="px-4 py-2 rounded-xl border border-red-500 text-red-500 bg-red-50 hover:bg-red-100 hover:text-red-600 transition-colors duration-200 shadow-sm"
               >
                 ✖ Cancel Update
@@ -219,7 +242,7 @@ const UpLoad = () => {
         description={alertDialogProps.description || "Bạn có chắc chắn muốn xóa quyền này?"}
         open={openAlertDialog}
         setOpen={setOpenAlertDialog}
-        onSubmit={() => {alertDialogProps.onSubmit?.(); setOpenAlertDialog(false);}}
+        onSubmit={() => { alertDialogProps.onSubmit?.(); setOpenAlertDialog(false); }}
       />
     </div>
   );

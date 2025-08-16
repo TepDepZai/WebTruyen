@@ -1,3 +1,5 @@
+"use client"
+import { useRouter } from "next/navigation";
 
 interface CardProps {
   id: string;
@@ -11,7 +13,8 @@ interface CardProps {
   onClick?: () => void;
 }
 
-const Card = ({ title, author, tags, imageUrl, corner_author, triggerUpdate, triggerDelete, onClick }: CardProps) => {
+const Card = ({ title, author, tags, imageUrl, corner_author, triggerUpdate, triggerDelete, onClick, id }: CardProps) => {
+  const router = useRouter();
   return (
     <div className="bg-gradient-to-br from-[#1b1b24] to-[#252536] border border-[#52357B]/50 rounded-2xl p-5 shadow-xl w-full max-w-lg space-y-4 hover:shadow-[#4ED7F1]/30 hover:shadow-2xl transition-all duration-300">
       <div onClick={onClick}>
@@ -39,9 +42,10 @@ const Card = ({ title, author, tags, imageUrl, corner_author, triggerUpdate, tri
           </p>
         </div>
       </div>
-
       <div className="flex gap-3 pt-3 text-xs">
-        <button className="flex-1 bg-[#4ED7F1] text-black font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-[#38c6de] active:scale-95 transition">
+        <button 
+        onClick={() => router.push(`/book/view/?id=${id}`)}
+        className="flex-1 bg-[#4ED7F1] text-black font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-[#38c6de] active:scale-95 transition">
           View
         </button>
         <button 
