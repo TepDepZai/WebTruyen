@@ -1,3 +1,5 @@
+"use client";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -49,7 +51,9 @@ const Header = () => {
     return (
         <header className="h-16 w-full bg-gradient-to-r from-[#52357B] to-[#3B5C7E] border-b border-gray-400 shadow-lg flex items-center justify-between px-6 gap-4">
             {/* Logo */}
-            <h1 className="text-white font-extrabold text-2xl tracking-wide font-mono drop-shadow-lg select-none">
+            <h1
+            onClick={() => router.push("/")}
+            className="text-white font-extrabold text-2xl tracking-wide font-mono drop-shadow-lg select-none">
                 Paper Point
             </h1>
 

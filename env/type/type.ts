@@ -59,5 +59,16 @@ export interface BookMainPage {
   id: string;
   title: string;
   img: string;
-
+}
+export interface BookDetail {
+  id: string;
+  title: string;
+  img: string;
+  tags: string;
+  content: string;
+  updatedAt: string;
+  createdAt: string;
+  status: string;
+  createdByName: string;
+  author: string;
 }
