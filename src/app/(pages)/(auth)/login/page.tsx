@@ -94,10 +94,11 @@ const LoginPage = () => {
                             >Password</label>
                             <div className="relative">
                                 <input
+                                    id="password"
                                     type="password"
                                     className="w-full border border-gray-300 p-2 rounded-md"
                                     placeholder="Enter password"
-                                    value={password} // 👈 BẮT BUỘC
+                                    value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>

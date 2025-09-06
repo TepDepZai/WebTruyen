@@ -1,11 +1,11 @@
 import ItemRollBar from "./itemrollbar";
 
 const Rollbar = () => {
-    return (
-        <div className="w-full bg-gradient-to-r text-white shadow-md flex items-center gap-4 rounded-xl my-2">
-            <ItemRollBar />
-        </div>
-    );
+  return (
+    <div className="w-full  shadow-lg rounded-2xl my-4 p-3">
+      <ItemRollBar />
+    </div>
+  );
 };
 
 export default Rollbar;

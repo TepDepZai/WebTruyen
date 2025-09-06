@@ -50,3 +50,37 @@ ID: 2304dc29-3b7c-4a29-a9ec-64fbcbb89de9 | Time: 2025-07-09T09:36:25.517Z | Name
 ID: 9d2da1e0-a90b-40ba-8264-b2b0a6442968 | Time: 2025-07-09T09:36:41.574Z | Name: ReferenceError | Cause: useRouter is not defined
 ID: f9dac46e-10b9-4db2-8a7c-e02ae27d1ef2 | Time: 2025-07-09T11:20:49.224Z | Name: ReferenceError | Cause: onChange is not defined
 ID: 058044cc-11c0-49f2-a45e-5e7109302bcb | Time: 2025-07-11T02:46:08.361Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'avatar')
+ID: bbab8662-c0fa-4597-9d58-e8b19e02fbd1 | Time: 2025-08-20T06:00:47.396Z | Name: TypeError | Cause: chapter.map is not a function
+ID: e771824f-98bf-45a4-b7ae-125616e854c0 | Time: 2025-08-21T05:42:51.881Z | Name: ReferenceError | Cause: handleCancel is not defined
+ID: 5cff4cda-fe68-4ccb-806a-5e84be7f4e8b | Time: 2025-08-22T15:15:29.671Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'map')
+ID: af5f9a94-75b8-4097-a8e7-48bbab03f77e | Time: 2025-08-22T15:15:44.626Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'map')
+ID: b65fa8c1-9df7-42c3-aea7-6a2edb585159 | Time: 2025-08-22T15:17:27.029Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'map')
+ID: e8cd0c31-0a1f-48ba-a70c-7c54dbe01640 | Time: 2025-08-23T10:12:41.500Z | Name: Error | Cause: link is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`.
+ID: 141f4756-fe35-4c20-894f-146afa2cc586 | Time: 2025-08-23T10:12:42.638Z | Name: Error | Cause: link is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`.
+ID: 5598e619-1da9-4027-ad43-97f4812c749c | Time: 2025-08-23T12:34:57.391Z | Name: Error | Cause: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+ID: 6acc6d02-0abd-4d98-84d3-59490963b6f2 | Time: 2025-08-23T12:34:59.007Z | Name: Error | Cause: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+ID: 69b0f842-7b8b-42c7-b9b9-1f7d066316dc | Time: 2025-08-23T12:35:00.799Z | Name: Error | Cause: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem.
+ID: 24ee2171-2844-4f7a-bf09-0b97de8505a2 | Time: 2025-08-23T12:35:45.462Z | Name: ReferenceError | Cause: useState is not defined
+ID: ec847a99-bf8c-4f8b-be3a-d8a184999b0f | Time: 2025-09-03T11:26:09.574Z | Name: Error | Cause: Objects are not valid as a React child (found: object with keys {_id, ChapterName, ChapterContent, ChapterNumber, BookId, BookName, CreatedByName, createdAt, updatedAt, __v}). If you meant to render a collection of children, use an array instead.
+ID: 761a9833-c521-40f0-b25e-a2508c057d97 | Time: 2025-09-03T11:26:11.415Z | Name: Error | Cause: Objects are not valid as a React child (found: object with keys {_id, ChapterName, ChapterContent, ChapterNumber, BookId, BookName, CreatedByName, createdAt, updatedAt, __v}). If you meant to render a collection of children, use an array instead.
+ID: af7bfd08-4ded-4631-9513-aa5ec5920d12 | Time: 2025-09-03T11:27:44.951Z | Name: Error | Cause: Objects are not valid as a React child (found: object with keys {title, img, content, author, tags, status, createdById, createdByName, Chapter, createdAt, updatedAt, slug, id}). If you meant to render a collection of children, use an array instead.
+ID: f13709ed-2f8f-45b6-87d1-eb2970ca7eb6 | Time: 2025-09-03T14:17:35.819Z | Name: Error | Cause: Objects are not valid as a React child (found: object with keys {chapterContent, chapterName, chapterNumber}). If you meant to render a collection of children, use an array instead.
+ID: 938bd3bd-f636-4e44-ba3c-fbb73d48ae14 | Time: 2025-09-05T07:42:26.288Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'map')
+ID: df96103d-ad7c-4df2-ae51-c66b9707a6c9 | Time: 2025-09-05T07:44:58.617Z | Name: TypeError | Cause: bookDetail?.map is not a function
+ID: 30c68b92-a097-4c24-b09a-be428419819e | Time: 2025-09-05T07:45:47.025Z | Name: TypeError | Cause: bookDetail.map is not a function
+ID: 1c755343-664c-4769-ba3d-2c4d474a585f | Time: 2025-09-05T07:47:24.425Z | Name: TypeError | Cause: bookDetail.map is not a function
+ID: 101b8f7a-e17e-46b6-acd0-1a7a2c3b4439 | Time: 2025-09-05T07:48:48.125Z | Name: TypeError | Cause: bookDetail.map is not a function
+ID: a2ac2b5b-7aa8-4bea-a5ce-a8e884b9ef44 | Time: 2025-09-05T09:38:09.680Z | Name: ReferenceError | Cause: searchParams is not defined
+ID: 59dcb498-3c01-424a-803c-e70571df3664 | Time: 2025-09-05T09:38:24.501Z | Name: ReferenceError | Cause: page is not defined

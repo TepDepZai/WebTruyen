@@ -3,12 +3,14 @@ import { Eye, EyeOff } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 interface InputSomeThingProps {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    id: string;
 }
-const InputSomeThing = ({ onChange }: InputSomeThingProps) => {
+const InputSomeThing = ({ onChange, id }: InputSomeThingProps) => {
 
     return (
         <div className="relative">
             <input
+                id={id}
                 type={"password"}
                 className="w-full border border-gray-300 p-2 rounded-md"
                 placeholder="Enter password"

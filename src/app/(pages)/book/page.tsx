@@ -22,7 +22,6 @@ const UpLoad = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
   const { alertDialogProps, setAlertDialogProps } = useAlertDialog();
-
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const router = useRouter();
@@ -157,7 +156,6 @@ const UpLoad = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       const books = await getAllBooks();
-      console.log(books);
       setDataBooks(books.paperPoints || []);
     };
     fetchBooks();
@@ -226,7 +224,7 @@ const UpLoad = () => {
             />
           </div>)}
       </div>
-      <div className="mt-10 border-2 border-gray-700 p-4 gap-4  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10  p-4 gap-4  grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {dataBooks.map((book) => (
           <Card key={book.id} id={book.id}
             title={book.title} author={book.createdByName}

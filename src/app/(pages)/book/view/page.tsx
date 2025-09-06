@@ -6,8 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
     
 
 const BookViewPage = () => {
-    const searchParams = useSearchParams();
     const [author, setAuthor] = useState(false)
+    const searchParams = useSearchParams();
     const id = searchParams.get("id"); 
     const [bookDetail, setBookDetail] = useState<BookDetail | null>(null);
     const router = useRouter();
@@ -20,6 +20,21 @@ const BookViewPage = () => {
         };
         fetchBookDetail();
     }, [id]);
+
+    const timeAgo = (date: string) => {
+  const now = new Date();
+  const past = new Date(date);
+  const diff = Math.floor((now.getTime() - past.getTime()) / 1000); 
+
+  if (diff < 60) return `${diff} second ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
+  if (diff < 2592000) return `${Math.floor(diff / 604800)} weeks ago`;
+  if (diff < 31536000) return `${Math.floor(diff / 2592000)} months ago`;
+  return `${Math.floor(diff / 31536000)} years ago`;
+};
+
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-6">
@@ -36,8 +51,8 @@ const BookViewPage = () => {
                     <p className="text-gray-700"><span className="font-semibold">Author:</span> {bookDetail?.author}</p>
                     <p className="text-gray-700"><span className="font-semibold">Corner Author:</span> {bookDetail?.author}</p>
                     <p className="text-gray-700"><span className="font-semibold">Genre:</span> {bookDetail?.tags}</p>
-                    <p className="text-gray-700"><span className="font-semibold">Date:</span> {bookDetail?.createdAt}</p>
-                    <p className="text-gray-700"><span className="font-semibold">Date Update:</span> {bookDetail?.updatedAt}</p>
+                    <p className="text-gray-700"><span className="font-semibold">Date:</span> {timeAgo(bookDetail?.createdAt ?? "")}</p>
+                    <p className="text-gray-700"><span className="font-semibold">Date Update:</span> {timeAgo(bookDetail?.updatedAt ?? "")}</p>
                     <p className="text-gray-700"><span className="font-semibold">Status:</span> {bookDetail?.status}</p>
                     <div>
                         <span className="font-semibold text-gray-800">Description:</span>
@@ -49,7 +64,9 @@ const BookViewPage = () => {
                 <div>
                     {author && (
                         <div className="flex gap-2">
-                            <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
+                            <button 
+                            onClick={() => router.push(`/book/chapter?id=${id}`)}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-md">
                                 Add Chapter
                             </button>
                             <button 
@@ -60,6 +77,19 @@ const BookViewPage = () => {
                         </div>
                     )}
                 </div>
+            </div>
+            <div className="mt-3 flex flex-col justify-center items-center">
+               <h3 className="text-2xl font-bold mb-4">Chapters</h3>
+               <div className="border-2 border-gray-500 w-150 h-100 overflow-y-auto">
+                    <div>{bookDetail?.Chapter.map(chapter => (
+                        <div className="flex justify-between p-4 hover:bg-blue-100 hover:text-blue-600 " 
+                        onClick={() => router.push(`/book/chapter/view?id=${bookDetail.id}&number=${chapter.ChapterNumber}`)}
+                        key={chapter._id}>
+                            <h4 className="font-semibold">Chapter {chapter.ChapterNumber}: {chapter.ChapterName}</h4>
+                            <p className="text-gray-600">{timeAgo(chapter.createdAt)}</p>
+                        </div>
+                    ))}</div>
+               </div>
             </div>
         </div>
     );

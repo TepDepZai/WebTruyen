@@ -8,12 +8,11 @@ interface CardProps {
   tags: string;
   imageUrl: string;
   corner_author: string;
-  triggerUpdate?: () => void;
   triggerDelete?: () => void;
   onClick?: () => void;
 }
 
-const Card = ({ title, author, tags, imageUrl, corner_author, triggerUpdate, triggerDelete, onClick, id }: CardProps) => {
+const Card = ({ title, author, tags, imageUrl, corner_author, triggerDelete, onClick, id }: CardProps) => {
   const router = useRouter();
   return (
     <div className="bg-gradient-to-br from-[#1b1b24] to-[#252536] border border-[#52357B]/50 rounded-2xl p-5 shadow-xl w-full max-w-lg space-y-4 hover:shadow-[#4ED7F1]/30 hover:shadow-2xl transition-all duration-300">
@@ -25,7 +24,6 @@ const Card = ({ title, author, tags, imageUrl, corner_author, triggerUpdate, tri
             className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
           />
         </div>
-  
         <h2 className="text-2xl font-bold text-[#4ED7F1] tracking-wide truncate">
           {title}
         </h2>
@@ -54,7 +52,7 @@ const Card = ({ title, author, tags, imageUrl, corner_author, triggerUpdate, tri
           Delete
         </button>
         <button
-          onClick={triggerUpdate}
+          onClick={() => router.push(`/book/chapter/?id=${id}`)}
           className="flex-1 bg-yellow-500 text-black font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 active:scale-95 transition"
         >
           Update Chapter
