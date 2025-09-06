@@ -1,8 +1,8 @@
 import api from "@/middleware/api";
 import mainAPI from "../../env/mainAPI";
 
-export const getAllBooksMainPage = async () => {
-  const res = await api.get(mainAPI.getAllBooks);
+export const getAllBooksMainPage = async (page: number, size: number) => {
+  const res = await api.get(`${mainAPI.getAllBooks}/?page=${page}&size=${size}`);
   return res.data;
 };
 export const getBookByIdMainPage = async (id: string) => {

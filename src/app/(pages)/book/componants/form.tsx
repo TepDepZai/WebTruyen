@@ -2,6 +2,7 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import InputField from "./inputField";
+import { Textarea } from "@/components/ui/textarea";
 
 interface UploadFormProps {
   title: string;
@@ -106,7 +107,7 @@ export default function UploadForm({
       {/* Content */}
       <div className="space-y-2">
         <label className="text-black font-medium">Content</label>
-        <textarea
+        <Textarea
           value={content}
           onChange={(e) => onContentChange(e.target.value)}
           placeholder="Write your content here..."

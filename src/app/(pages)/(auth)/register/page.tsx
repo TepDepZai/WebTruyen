@@ -89,13 +89,13 @@ const RegisterPage = () => {
                         </div>
                         <div>
                             <label htmlFor="password" className={`${errors.password ? "block mb-1 text-red-500" : "block mb-1"}`}>Password</label>
-                            <InputSomeThing onChange={(e) => {
+                            <InputSomeThing id="password" onChange={(e) => {
                                 setPassword(e.target.value)
                             }} />
                         </div>
                         <div>
                             <label htmlFor="confirmPassword" className={`${errors.confirmPassword ? "block mb-1 text-red-500" : "block mb-1"}`}>Confirm Password</label>
-                            <InputSomeThing onChange={(e) => {
+                            <InputSomeThing id="confirmPassword" onChange={(e) => {
                                 setConfirmPassword(e.target.value)
                             }} />
                         </div>
