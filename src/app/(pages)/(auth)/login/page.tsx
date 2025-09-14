@@ -1,9 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
-import {  useState } from "react";
+import { useState } from "react";
 import ToolTip from "../components/tooltip";
-import { login } from "@/services/authService";
+import { login, loginWithGoogle } from "@/services/authService";
 import useToastState from "../../_components/hook/useToast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
     const [loading, setLoading] = useState(false);
@@ -15,7 +19,7 @@ const LoginPage = () => {
     const UserNull = submitted && identifier.trim() === "";
     const PwNull = submitted && password.trim() === "";
     const { setToast } = useToastState();
-    
+
     const handleLogin = async () => {
         setsubmitted(true);
         if (!password || !identifier) {
@@ -34,11 +38,11 @@ const LoginPage = () => {
             if (res.success) {
                 router.push("/");
             } else {
-               setToast({
-                title: "Login Failed",
-                message: "Please enter your username and password.",
-                variant: "error",
-            });
+                setToast({
+                    title: "Login Failed",
+                    message: "Please enter your username and password.",
+                    variant: "error",
+                });
             }
         } catch (error: any) {
             if (error.response && error.response.data) {
@@ -48,6 +52,19 @@ const LoginPage = () => {
             }
         }
     }
+    const reqLoginGoogle = async (token: string) => {
+        const data = await loginWithGoogle(token);
+        if (data.success) {
+            router.push("/");
+        } else {
+            setToast({
+                title: "Login Failed",
+                message: "Google login failed. Please try again.",
+                variant: "error",
+            });
+        }
+    }
+
     const backToMain = () => {
         return router.push("/");
     }
@@ -79,8 +96,8 @@ const LoginPage = () => {
                     <div className="flex flex-col gap-4 mb-4">
                         <ToolTip changed={submitted && password.length > 0 && password.length < 8} />
                         <div>
-                            <label htmlFor="username" className={`${UserNull ? "block mb-1 text-red-500" : "block mb-1"}`}>User Name</label>
-                            <input
+                            <Label htmlFor="username" className={`${UserNull ? "block mb-1 text-red-500" : "block mb-1"}`}>User Name</Label>
+                            <Input
                                 id="username"
                                 type="text"
                                 placeholder="Enter your username"
@@ -90,10 +107,10 @@ const LoginPage = () => {
                             />
                         </div>
                         <div>
-                            <label htmlFor="password" className={`${PwNull ? "block mb-1 text-red-500" : "block mb-1"}`}
-                            >Password</label>
+                            <Label htmlFor="password" className={`${PwNull ? "block mb-1 text-red-500" : "block mb-1"}`}
+                            >Password</Label>
                             <div className="relative">
-                                <input
+                                <Input
                                     id="password"
                                     type="password"
                                     className="w-full border border-gray-300 p-2 rounded-md"
@@ -113,21 +130,26 @@ const LoginPage = () => {
                         <a href="#" className="text-blue-500 hover:underline">Forgot password?</a>
                     </div>
                     <div className="flex justify-center">
-                        <button
+                        <Button
                             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-xl disabled:opacity-50"
                             type="submit"
                         >
                             {loading ? "Đang đăng nhập..." : "Login"}
-                        </button>
+                        </Button>
                     </div>
                     <div className="flex items-center justify-center mt-4 mb-6">
-                        <button
-                            type="button"
-                            className="bg-white border-1 text-sm hover:bg-blue-400 text-black py-2 px-3 rounded-xl flex gap-1"
-                        >
-                            <img src="./google.svg" alt="ảnh google" className="w-5 h-5" />
-                            Login with google
-                        </button>
+                        <GoogleLogin
+                            onSuccess={(credentialResponse) => {
+                                const { credential } = credentialResponse;
+                                if (!credential) return;
+
+                                // Gửi credential (ID token) về server
+                                reqLoginGoogle(credential);
+                            }}
+                            onError={() => {
+                                console.log("Google Login Failed");
+                            }}
+                        />
                     </div>
                     <p className="text-center mt-6 text-sm">
                         Don't have an account?{" "}
