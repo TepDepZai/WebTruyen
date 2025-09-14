@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Toaster } from "@/components/ui/sonner";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <ErrorBoundary>
+          <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
+            {children}
+          </GoogleOAuthProvider>
+        </ErrorBoundary>
         <Toaster richColors position="top-right" expand={false} theme="light" className="app-toaster" />
       </body>
     </html>

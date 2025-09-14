@@ -8,6 +8,7 @@ const authAPI = {
   getAllUsers: `${base}/getAllUsers`,
   assignRole: `${base}/assignRole`,
   activateUser: `${base}/activateUser`,
+  loginWithGoogle: `${base}/loginWithGoogle`,
 };
 
 export default authAPI;
