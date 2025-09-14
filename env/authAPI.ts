@@ -5,7 +5,9 @@ const authAPI = {
   logout: `${base}/logout`,
   register: `${base}/register`,
   getCurrentUser: `${base}/getCurrentUser`,
-
+  getAllUsers: `${base}/getAllUsers`,
+  assignRole: `${base}/assignRole`,
+  activateUser: `${base}/activateUser`,
 };
 
 export default authAPI;

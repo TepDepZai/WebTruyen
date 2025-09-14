@@ -1,5 +1,6 @@
 "use client";
 
+import { AdminIcon } from "@/components/icon";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -22,6 +23,7 @@ import { useEffect, useState } from "react";
 
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const router = useRouter();
 
     const handleLogout = async () => {
@@ -42,6 +44,7 @@ const Header = () => {
             try {
                 const res = await getCurrentUser();
                 setIsLoggedIn(res.success);
+                setIsAdmin(res.user?.role === "Admin");
             } catch (error: any) {
             }
         };
@@ -125,6 +128,16 @@ const Header = () => {
                     >
                         <User size={16} /> Profile
                     </DropdownMenuItem>
+                    {isAdmin && (
+                        <DropdownMenuItem className="gap-2"
+                            onClick={() => router.push("/admin/user")}
+                        >
+                            <AdminIcon /> Admin Panel
+                        </DropdownMenuItem>
+                    )}
+                    <DropdownMenuSeparator />
+
+
                     {isLoggedIn ? (
                         <DropdownMenuItem
                             className="gap-2 text-red-600 hover:text-red-700"
