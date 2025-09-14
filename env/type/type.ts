@@ -16,13 +16,15 @@ export interface RegisterData {
 
 // Thông tin người dùng trả về sau khi đăng nhập
 export interface User {
-  id: string;
+  _id: string;
   email: string;
   userName: string;
   fullName?: string;
   role?: string;
   avatar?: string;
+  createdAt?: string;
   updatedAt?: string;
+  isActive?: boolean;
 }
 // Thông tin sách
 export interface Book {
