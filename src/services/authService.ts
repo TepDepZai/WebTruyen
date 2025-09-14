@@ -36,6 +36,10 @@ export const activateUser = async (user_id: string) => {
   }
 }
 export const loginWithGoogle = async (access_token: string) => {
-  const res = await api.post(authAPI.loginWithGoogle, { access_token });
-  return res.data;
+  try {
+    const res = await api.post(authAPI.loginWithGoogle, { access_token });
+    return res.data;
+  } catch (err: any) {
+    return err.response?.data || { success: false, message: "Unknown error" };
+  }
 }
