@@ -102,6 +102,7 @@ const CreateChapterPage = () => {
                         Chapter Content
                     </label>
                     <Textarea
+                        id="chapterContent"
                         className="w-full h-100 resize-none whitespace-pre-wrap"
                         value={chapterContent}
                         onChange={(e) => setChapterContent(e.target.value)}

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { BookDetail } from "../../../../../env/type/type";
 import { getBookByIdMainPage } from "@/services/mainPage";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
     
 
 const BookViewPage = () => {
@@ -64,16 +65,18 @@ const BookViewPage = () => {
                 <div>
                     {author && (
                         <div className="flex gap-2">
-                            <button 
+                            <Button
+                            id="add-chapter-button"
                             onClick={() => router.push(`/book/chapter?id=${id}`)}
                             className="bg-blue-500 text-white px-4 py-2 rounded-md">
                                 Add Chapter
-                            </button>
-                            <button 
+                            </Button>
+                            <Button 
+                            id="edit-book-button"
                             onClick={() => router.push(`/book?id=${id}`)}
                             className="bg-green-500 text-white px-4 py-2 rounded-md">
                                 Edit Book
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>

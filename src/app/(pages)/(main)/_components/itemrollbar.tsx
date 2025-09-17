@@ -1,48 +1,35 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { getItemRollBar } from "@/services/mainPage";
 import Autoplay from "embla-carousel-autoplay";
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
+import { RollBar } from "../../../../../env/type/type";
 
-const stories = [
-  {
-    title: "Đại Quản gia của ta là ma hoàng",
-    cover:
-      "https://thuvienanime.net/wp-content/uploads/2023/04/dai-quan-gia-la-ma-hoang-thuvienanime-1.jpg",
-    newchap: "Chap 100",
-  },
-  {
-    title: "One Piece",
-    cover: "https://n19.mbmyj.org/media/mbim/b86/b86c86d3b4a3d1b923c916b865d4516a909650b2_429_578_60704.webp",
-    newchap: "Chap 1112",
-  },
-  {
-    title: "Solo Leveling",
-    cover: "https://n02.mbznp.org/media/mbim/077/07762696df393a9a9043dc1aa06cb8ed6a08449d_392_578_44580.webp",
-    newchap: "Chap 200",
-  },
-  {
-    title: "Thám Tử Lừng Danh Conan",
-    cover: "https://k01.mbrtz.org/media/mbim/c26/c265df7cfa425dde4bc70d9f02b668f98a3764ca_600_759_119212.webp",
-    newchap: "Chap 1110",
-  },
-  {
-    title: "Naruto",
-    cover: "https://n04.mbqgu.org/thumb/W600/ampi/872/8722d9c56c5412fb92e9fde72c24bd958932642f_540_720_130673.jpeg",
-    newchap: "Hoàn thành",
-  },
-];
+
+  
 
 const ItemRollBar = () => {
-  const plugin = React.useRef(
+  const [itemRollBar, setItemRollBar] = useState<RollBar[]>([]);
+  const plugin = useRef(
     Autoplay({
       delay: 3000,
       stopOnInteraction: true,
     })
   );
+  useEffect(() => {
+    const reqItemRollBar = async () => {
+      const data = await getItemRollBar();
+
+      setItemRollBar(data.books);
+    };
+    reqItemRollBar();
+  }, []);
 
   return (
     <div className="w-full mx-auto relative rounded-xl overflow-hidden">
@@ -54,7 +41,7 @@ const ItemRollBar = () => {
         opts={{ loop: true }}
       >
         <CarouselContent>
-          {stories.map((story, index) => (
+          {itemRollBar.map((story, index) => (
             <CarouselItem
               key={index}
               className="basis-3/5 sm:basis-1/2 md:basis-2/5 lg:basis-1/4"
@@ -64,7 +51,7 @@ const ItemRollBar = () => {
                   {/* Cover */}
                   <div className="relative w-20 h-28 flex-shrink-0">
                     <img
-                      src={story.cover}
+                      src={story.img}
                       alt={story.title}
                       className="w-full h-full object-cover rounded-lg shadow-lg ring-2 ring-transparent hover:ring-yellow-400 transition-all duration-300"
                     />
@@ -78,7 +65,7 @@ const ItemRollBar = () => {
                       {story.title}
                     </span>
                     <span className="inline-block mt-2 text-[11px] md:text-xs font-semibold px-2 py-0.5 rounded-full bg-yellow-400/90 text-gray-900 w-fit shadow-sm">
-                      {story.newchap}
+                      {story.Chapter.length} Chapters
                     </span>
                   </div>
                 </CardContent>
