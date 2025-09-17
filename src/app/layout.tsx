@@ -4,6 +4,7 @@ import "./globals.css";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Toaster } from "@/components/ui/sonner";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AuthProvider } from "../contexts/authProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,7 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
-            {children}
+           <AuthProvider> {children}</AuthProvider>
           </GoogleOAuthProvider>
         </ErrorBoundary>
         <Toaster richColors position="top-right" expand={false} theme="light" className="app-toaster" />

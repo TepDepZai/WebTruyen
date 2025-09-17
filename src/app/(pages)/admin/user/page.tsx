@@ -5,13 +5,23 @@ import { useEffect, useState } from "react";
 import { User } from "../../../../../env/type/type";
 import { getAllUsers } from "@/services/authService";
 import AppPagination from "../../_components/pagination";
-import { useSearchParams } from "next/navigation";
+import { forbidden, useSearchParams } from "next/navigation";
 import ViewUserDialog from "./dialog/view.dialog";
+import { useAdmin } from "../../_components/hook/useAdmin";
+import { AppSearch } from "../../_components/search";
 const UserPage = () => {
     const searchParam = useSearchParams();
     const page = searchParam.get("page") || 1;
     const size = searchParam.get("size") || 10;
+    const search = searchParam.get("search") || "";
     const [users, setUsers] = useState<User[]>([]);
+    const { isAdmin, loading } = useAdmin();
+
+    if (!isAdmin) {
+        if (!loading) {
+            forbidden();
+        }
+    }
     const [pagination, setPagination] = useState({
         has_prev: false,
         has_next: false,
@@ -19,20 +29,24 @@ const UserPage = () => {
         total_pages: 1
     });
     const fetchGetAllUsers = async () => {
-            const response = await getAllUsers(Number(page) || 1, Number(size) || 10);
+            const response = await getAllUsers(Number(page) || 1, Number(size) || 10 , search);
             setUsers(response.users);
             setPagination(response.pagination);
+            search
         };
     useEffect(() => {
         fetchGetAllUsers();
-    }, [page, size]);
+    }, [page, size , search]);
+    
+
+
   return (
     <div className="p-6">
       <div>
         <div className="flex items-center justify-between mb-2">
           <h1 className="text-2xl font-bold mb-4">User Management</h1>
           <div className="w-1/3">
-            <Input placeholder="Search users..." />
+            <AppSearch placeholder="Search users..." /> 
           </div>
         </div>
         <p className="text-gray-600">Manage user accounts and permissions</p>

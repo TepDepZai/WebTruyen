@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GoogleLogin } from "@react-oauth/google";
+import { useAuth } from "@/contexts/authProvider";
 
 const LoginPage = () => {
     const [loading, setLoading] = useState(false);
@@ -19,7 +20,7 @@ const LoginPage = () => {
     const UserNull = submitted && identifier.trim() === "";
     const PwNull = submitted && password.trim() === "";
     const { setToast } = useToastState();
-
+    const { setUser } = useAuth();
     const handleLogin = async () => {
         setsubmitted(true);
         if (!password || !identifier) {
@@ -36,6 +37,7 @@ const LoginPage = () => {
                 password: password.trim()
             });
             if (res.success) {
+                setUser(res.user);
                 router.push("/");
             } else {
                 setToast({

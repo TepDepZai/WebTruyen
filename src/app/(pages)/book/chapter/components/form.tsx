@@ -33,6 +33,7 @@ const ChapterForm = ({isEdit, handleCancel, submitButtonText, handleSubmit, hand
                                 Chapter Name
                             </label>
                             <Input
+                                id="chapterName"
                                 value={chapterName}
                                 onChange={(e) => setChapterName(e.target.value)}
                                 placeholder="Enter chapter name..."
@@ -44,6 +45,7 @@ const ChapterForm = ({isEdit, handleCancel, submitButtonText, handleSubmit, hand
                                 Chapter Number
                             </label>
                             <Input
+                                id="chapterNumber"
                                 type="number"
                                 value={chapterNumber}
                                 onChange={(e) => setChapterNumber(e.target.value)}
@@ -86,7 +88,7 @@ const ChapterForm = ({isEdit, handleCancel, submitButtonText, handleSubmit, hand
                                 <Button type="reset" className="bg-gray-300 hover:bg-gray-400 mr-2">
                                     Reset
                                 </Button>
-                                <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700">
+                                <Button id="submit-chapter-button" type="submit" className="bg-indigo-600 hover:bg-indigo-700">
                                     {submitButtonText}
                                 </Button>
                             </div>

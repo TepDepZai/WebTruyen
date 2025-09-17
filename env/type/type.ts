@@ -66,6 +66,12 @@ export interface BookMainPage {
   img: string;
   Chapter: ChapterNumber[];
 }
+export interface RollBar {
+  id: string;
+  title: string;
+  img: string;
+  Chapter: ChapterNumber[];
+}
 export interface PaginationResponse<T> {
   has_next: boolean;
   has_prev: boolean;

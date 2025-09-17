@@ -9,3 +9,12 @@ export const getBookByIdMainPage = async (id: string) => {
   const res = await api.get(`${mainAPI.getBookProfileById}/${id}`);
   return res.data;
 };
+export const getItemRollBar = async () => {
+  try {
+    const res = await api.get(mainAPI.getItemRollBar);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching item roll bar:", error);
+    throw error;
+  }
+};

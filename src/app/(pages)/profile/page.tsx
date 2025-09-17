@@ -1,79 +1,42 @@
 "use client";
 
-import { getCurrentUser } from "@/services/authService";
 import { updateUser, changePassword } from "@/services/profileService";
 import { ChevronLeft, Camera } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useToastState from "../_components/hook/useToast";
-
+import { useAuth } from "@/contexts/authProvider";
+import { useEffect } from "react";
 const ProfileMain = () => {
-  const defaultUser = {
-    name: "",
-    email: "",
-    avatar: "./avataaars.svg",
-    joinDate: "",
-    readingStats: { totalRead: 0, favorites: 0, currentlyReading: 0 },
-    role: ""
-  };
+  const router = useRouter();
+  const { setToast } = useToastState();
+  const { user, setUser,loading } = useAuth();
 
-  const [user, setUser] = useState(defaultUser);
   const [isEditing, setIsEditing] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const router = useRouter();
-  const { setToast } = useToastState();
-useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      const res = await getCurrentUser();
-      if (!res.success) {
-        console.log("Failed to fetch user data:", res.message);
-        setToast({
-          title: "Error",
-          message: res.message || "You need to login to your account.",
-          variant: "error",
-        });
-        router.push("/login");
-      } else {
-        const data = res.user;
-        setUser({
-          name: data.fullName || data.userName || "null",
-          email: data.email || "null",
-          avatar: data.avatar || "./avataaars.svg",
-          joinDate: data.createdAt
-            ? new Date(data.createdAt).toLocaleDateString("vi-VN", {
-                month: "long",
-                year: "numeric"
-              })
-            : "null",
-          readingStats: {
-            totalRead: data.totalRead || 0,
-            favorites: data.favorites || 0,
-            currentlyReading: data.currentlyReading || 0
-          },
-          role: data.role || "Null"
-        });
-      } 
-    } catch (error) {
-      console.error("Lỗi khi lấy thông tin user:", error);
-      setToast({
-        title: "Error",
-        message: "Có lỗi khi lấy thông tin user.",
-        variant: "error",
-      });
+  useEffect(() => {
+    if (!loading && !user) {
       router.push("/login");
     }
-  };
-  fetchUser();
-}, []);
+  }, [loading, user, router]);
+
+  if (loading) {
+    return <div className="p-6 text-gray-500">Loading...</div>;
+  }
+
+  if (!user) {
+    return null; 
+  }
 
   const handleUpdateUser = async () => {
     try {
-      const res = await updateUser({ fullName: user.name.trim() });
+      const res = await updateUser({ fullName: user.fullName.trim() });
       if (res.success) {
         setIsEditing(false);
-        setUser((prev) => ({ ...prev, name: res.user.fullName }));
+        setUser((prev) =>
+          prev ? { ...prev, fullName: res.user.fullName } : prev
+        );
       }
     } catch (error) {
       console.error("Lỗi khi cập nhật user:", error);
@@ -105,6 +68,13 @@ useEffect(() => {
     }
   };
 
+  // Map màu thủ công (tránh Tailwind không build class)
+  const statStyles: Record<string, { bg: string; text: string }> = {
+    blue: { bg: "bg-blue-50", text: "text-blue-600" },
+    green: { bg: "bg-green-50", text: "text-green-600" },
+    yellow: { bg: "bg-yellow-50", text: "text-yellow-600" },
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       {/* Back button */}
@@ -121,7 +91,7 @@ useEffect(() => {
           {/* Avatar */}
           <div className="relative group">
             <img
-              src={user.avatar}
+              src={user.avatar || "./avataaars.svg"}
               alt="Avatar"
               className="w-32 h-32 rounded-full border-4 border-blue-200 shadow-md object-cover"
             />
@@ -138,14 +108,20 @@ useEffect(() => {
             {isEditing ? (
               <input
                 type="text"
-                value={user.name}
-                onChange={(e) => setUser({ ...user, name: e.target.value })}
-                className="text-3xl font-bold text-gray-800 border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                value={user.fullName}
+                onChange={(e) =>
+                  setUser((prev) =>
+                    prev ? { ...prev, fullName: e.target.value } : prev
+                  )
+                }
                 placeholder="Enter your name"
                 title="Name"
+                className="p-2 border border-gray-300 rounded-lg w-full max-w-sm"
               />
             ) : (
-              <h1 className="text-3xl font-bold text-gray-800">{user.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-800">
+                {user.fullName}
+              </h1>
             )}
             <p className="text-gray-600">{user.email}</p>
             <p className="text-sm text-gray-500">
@@ -221,26 +197,26 @@ useEffect(() => {
             {[
               {
                 title: "Total chapters",
-                value: user.readingStats.totalRead,
-                color: "blue"
+                value: user.readingStats?.totalRead || 0,
+                color: "blue",
               },
               {
                 title: "Favourite",
-                value: user.readingStats.favorites,
-                color: "green"
+                value: user.readingStats?.favorites || 0,
+                color: "green",
               },
               {
                 title: "Reading",
-                value: user.readingStats.currentlyReading,
-                color: "yellow"
-              }
+                value: user.readingStats?.currentlyReading || 0,
+                color: "yellow",
+              },
             ].map((stat, i) => (
               <div
                 key={i}
-                className={`bg-${stat.color}-50 p-6 rounded-xl shadow text-center`}
+                className={`${statStyles[stat.color].bg} p-6 rounded-xl shadow text-center`}
               >
                 <h3
-                  className={`text-xl font-semibold text-${stat.color}-600 mb-2`}
+                  className={`text-xl font-semibold ${statStyles[stat.color].text} mb-2`}
                 >
                   {stat.title}
                 </h3>
