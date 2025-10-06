@@ -3,19 +3,19 @@ import DialogAdmin from "../../components/dialogAdmin";
 
 interface ViewUserDialogProps {
   userData: {
-    _id: string;
-    email: string;
-    userName: string;
-    fullName?: string;
-    role?: string;
-    avatar?: string;
-    updatedAt?: string;
-    isActive?: boolean;
-    createdAt?: string;
+    id: string;
+    img: string;
+    title: string;
+    author: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    createdByName?: string;
+    tags?: string[];
   }[];
 }
 
-const ViewUserDialog = ({ userData }: ViewUserDialogProps) => {
+const ViewBookDialog = ({ userData }: ViewUserDialogProps) => {
   const searchParam = useSearchParams();
   const router = useRouter();
   const userId = searchParam.get("id");
@@ -26,7 +26,7 @@ const ViewUserDialog = ({ userData }: ViewUserDialogProps) => {
     const params = new URLSearchParams(searchParam.toString());
     params.delete("mode");
     params.delete("id");
-    router.push(`/admin/user?${params.toString()}`, { scroll: false });
+    router.push(`/admin/listBook?${params.toString()}`, { scroll: false });
   };
 
   const timeAgo = (date?: string) => {
@@ -45,14 +45,14 @@ const ViewUserDialog = ({ userData }: ViewUserDialogProps) => {
     return `${Math.floor(diff / 31536000)} years ago`;
   };
 
-  const user = userData.find((u) => u._id === userId);
+  const user = userData.find((u) => u.id === userId);
 
   return (
     <DialogAdmin
       sizeX="xl"
       sizeY="xl"
-      title="View User"
-      description="Chi tiết thông tin người dùng"
+      title="View Book"
+      description=" Detailed information about the book."
       open={open}
       onClose={closeModal}
       showFooter={false}
@@ -60,56 +60,31 @@ const ViewUserDialog = ({ userData }: ViewUserDialogProps) => {
         user ? (
           <div className="space-y-6">
             <div className="flex flex-col items-center space-y-2">
-              {user.avatar ? (
+              {user.img ? (
                 <img
-                  src={user.avatar}
+                  src={user.img}
                   alt="Avatar"
                   className="w-24 h-24 rounded-full border shadow-md"
                 />
               ) : (
                 <div className="w-24 h-24 rounded-full flex items-center justify-center bg-gray-200 text-gray-500 text-xl font-bold">
-                  {user.fullName?.charAt(0) || "?"}
+                  {user.title?.charAt(0) || "?"}
                 </div>
               )}
               <div className="text-center">
                 <h2 className="text-lg font-semibold text-gray-900">
-                  {user.fullName || "—"}
+                  {user.title || "—"}
                 </h2>
-                <p className="text-sm text-gray-500">{user.email}</p>
               </div>
             </div>
 
             <div className="grid gap-3 text-sm">
-              <Field label="User ID" value={user._id} />
-              <Field label="User Name" value={user.userName || "—"} />
-              <Field
-                label="Role"
-                value={
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      user.role === "Admin"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}
-                  >
-                    {user.role || "—"}
-                  </span>
-                }
-              />
-              <Field
-                label="State"
-                value={
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      user.isActive
-                        ? "bg-red-100 text-red-600"
-                        : "bg-green-100 text-green-600"
-                    }`}
-                  >
-                    {user.isActive ? "Deactivated" : "Activated"}
-                  </span>
-                }
-              />
+              <Field label="User ID" value={user.id} />
+              <Field label="Book Title" value={user.title} />
+              <Field label="Book Author" value={user.author} />
+              <Field label="status" value={user.status} />
+              <Field label="tags" value={user.tags?.join(", ") || "—"} />
+              <Field label="Created By" value={user.createdByName || "—"} />
               <Field label="Created At" value={timeAgo(user.createdAt)} />
               <Field label="Updated At" value={timeAgo(user.updatedAt)} />
             </div>
@@ -135,4 +110,4 @@ const Field = ({
   </div>
 );
 
-export default ViewUserDialog;
+export default ViewBookDialog;

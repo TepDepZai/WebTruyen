@@ -1,76 +1,88 @@
 "use client";
-import { Input } from "@/components/ui/input";
-import CardAdmin from "../components/cardAdmin";
 import { useEffect, useState } from "react";
-import { User } from "../../../../../env/type/type";
+import { useSearchParams, forbidden } from "next/navigation";
+import { PaginationResponse, User } from "../../../../../env/type/type";
 import { getAllUsers } from "@/services/authService";
-import AppPagination from "../../_components/pagination";
-import { forbidden, useSearchParams } from "next/navigation";
-import ViewUserDialog from "./dialog/view.dialog";
 import { useAdmin } from "../../_components/hook/useAdmin";
+
+import CardAdmin from "../components/cardAdmin";
+import AppPagination from "../../_components/pagination";
 import { AppSearch } from "../../_components/search";
+import TabBarAdmin from "../components/tabBarAdmin";
+import ViewUserDialog from "./dialog/view.dialog";
+
 const UserPage = () => {
-    const searchParam = useSearchParams();
-    const page = searchParam.get("page") || 1;
-    const size = searchParam.get("size") || 10;
-    const search = searchParam.get("search") || "";
-    const [users, setUsers] = useState<User[]>([]);
-    const { isAdmin, loading } = useAdmin();
+  const searchParam = useSearchParams();
+  const page = searchParam.get("page") || 1;
+  const size = searchParam.get("size") || 10;
+  const search = searchParam.get("search") || "";
 
-    if (!isAdmin) {
-        if (!loading) {
-            forbidden();
-        }
+  const [users, setUsers] = useState<User[]>([]);
+  const [pagination, setPagination] = useState<PaginationResponse<User>>();
+
+
+  const { isAdmin, loading } = useAdmin();
+
+  if (!isAdmin) {
+    if (!loading) {
+      forbidden();
     }
-    const [pagination, setPagination] = useState({
-        has_prev: false,
-        has_next: false,
-        page: 1,
-        total_pages: 1
-    });
-    const fetchGetAllUsers = async () => {
-            const response = await getAllUsers(Number(page) || 1, Number(size) || 10 , search);
-            setUsers(response.users);
-            setPagination(response.pagination);
-            search
-        };
-    useEffect(() => {
-        fetchGetAllUsers();
-    }, [page, size , search]);
-    
+  }
 
+  const fetchGetAllUsers = async () => {
+    const response = await getAllUsers(Number(page), Number(size), search);
+    setUsers(response.users);
+    setPagination(response.pagination);
+  };
+
+  useEffect(() => {
+    fetchGetAllUsers();
+  }, [page, size, search]);
 
   return (
-    <div className="p-6">
-      <div>
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-2xl font-bold mb-4">User Management</h1>
-          <div className="w-1/3">
-            <AppSearch placeholder="Search users..." /> 
+    <div>
+      <div className="max-w-7xl mx-auto space-y-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent drop-shadow-sm">
+            User Management
+          </h1>
+
+          <TabBarAdmin />
+
+          <div className="w-full md:w-1/3">
+            <AppSearch placeholder="Search users..." />
           </div>
         </div>
-        <p className="text-gray-600">Manage user accounts and permissions</p>
-      </div>
-      <ViewUserDialog userData={users} />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {users.map((user, index) => (
-          <CardAdmin
-            key={user._id }
-            _id={user._id}
-            name={user.fullName || "No Name"}
-            role={user.role || "No Role"}
-            email={user.email}
-            activated={user.isActive}
-            refresh={fetchGetAllUsers}
+
+        <p className="text-gray-600 text-base">
+          Manage user accounts, roles, and permissions easily.
+        </p>
+
+        <ViewUserDialog userData={users} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {users.map((user) => (
+            <CardAdmin
+              key={user._id}
+              _id={user._id}
+              name={user.fullName || "No Name"}
+              role={user.role || "No Role"}
+              email={user.email}
+              activated={user.isActive}
+              refresh={fetchGetAllUsers}
+            />
+          ))}
+        </div>
+
+        <div className="flex justify-center pt-6">
+          <AppPagination
+            total_pages={pagination?.total_pages || 1}
+            page={pagination?.page || 1}
+            has_next={pagination?.has_next || false}
+            has_prev={pagination?.has_prev || false}
           />
-        ))}
+        </div>
       </div>
-      <AppPagination
-        has_next={pagination.has_next}
-        has_prev={pagination.has_prev}
-        page={pagination.total_pages}
-        total_pages={pagination.page}
-      />
     </div>
   );
 };
