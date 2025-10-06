@@ -17,6 +17,8 @@ interface DialogAdminProps {
   triggerVariant?: "default" | "outline" | "secondary" | "destructive";
   content: React.ReactNode;
   onSubmit?: (data: unknown) => void;
+  sizeX?: "sm" | "md" | "lg" | "xl";
+  sizeY?: "sm" | "md" | "lg" | "xl";
   showFooter?: boolean;
   trigger?: React.ReactNode;
   open?: boolean;
@@ -32,26 +34,42 @@ const DialogAdmin = ({
   triggerVariant = "outline",
   open = false,
   content,
+  sizeX = "md",
+  sizeY = "md",
   setOpen = () => { },
   onClose,
   onSubmit,
   showFooter = true,
 }: DialogAdminProps) => {
 
-    const handleOpenChange = (open: boolean) => {
+  const handleOpenChange = (open: boolean) => {
     setOpen(open);
     if (!open && onClose) {
       onClose();
     }
   }
-
+  const SizeXDialog =
+    sizeX === "sm"
+      ? " w-[300px]"
+      : sizeX === "md"
+        ? " w-[400px]"
+        : sizeX === "lg"
+          ? " w-[500px]"
+          : " w-[600px]";
+  const SizeYDialog =
+    sizeY === "sm"
+      ? " h-[300px]"
+      : sizeY === "md"
+        ? " h-[400px]"
+        : sizeY === "lg"
+          ? " h-[500px]"
+          : " h-[600px]";
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className={` overflow-auto` + SizeXDialog + SizeYDialog}>
         <form onSubmit={onSubmit}>
           <DialogHeader>
             <DialogTitle>{title || "Thông báo"}</DialogTitle>
@@ -65,11 +83,17 @@ const DialogAdmin = ({
               <DialogClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
-              <Button type="submit" onClick={() => {
-              if (onSubmit) {
-                onSubmit({});
-              }
-            }}>Save changes</Button>
+              <Button
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (onSubmit) {
+                    onSubmit({});
+                  }
+                }}
+              >
+                Save changes
+              </Button>
             </DialogFooter>
           )}
         </form>
