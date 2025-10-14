@@ -84,3 +84,4 @@ ID: 1c755343-664c-4769-ba3d-2c4d474a585f | Time: 2025-09-05T07:47:24.425Z | Name
 ID: 101b8f7a-e17e-46b6-acd0-1a7a2c3b4439 | Time: 2025-09-05T07:48:48.125Z | Name: TypeError | Cause: bookDetail.map is not a function
 ID: a2ac2b5b-7aa8-4bea-a5ce-a8e884b9ef44 | Time: 2025-09-05T09:38:09.680Z | Name: ReferenceError | Cause: searchParams is not defined
 ID: 59dcb498-3c01-424a-803c-e70571df3664 | Time: 2025-09-05T09:38:24.501Z | Name: ReferenceError | Cause: page is not defined
+ID: 4198d94f-5f68-48fe-abfa-b603d9339a78 | Time: 2025-10-14T03:53:14.867Z | Name: Error | Cause: Objects are not valid as a React child (found: object with keys {answer}). If you meant to render a collection of children, use an array instead.

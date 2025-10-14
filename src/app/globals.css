@@ -5,6 +5,11 @@ html,
 body,
 :root{
   height: 100%;
+  font-size: clamp(12px, 1vw + 0.5rem, 16px);
+  scrollbar-width: thin;
+  scrollbar-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 

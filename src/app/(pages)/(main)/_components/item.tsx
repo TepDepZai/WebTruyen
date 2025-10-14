@@ -5,6 +5,7 @@ import { BookMainPage, PaginationResponse } from "../../../../../env/type/type";
 import { getAllBooksMainPage } from "@/services/mainPage";
 import { useRouter, useSearchParams } from "next/navigation";
 import AppPagination from "../../_components/pagination";
+import AIChatBotBox from "./AIChatBot";
 
 const ItemMain = () => {
   const [books, setBooks] = useState<BookMainPage[]>([]);
@@ -76,6 +77,9 @@ const ItemMain = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        <AIChatBotBox />
       </div>
       <AppPagination
         total_pages={pagination?.total_pages || 1}

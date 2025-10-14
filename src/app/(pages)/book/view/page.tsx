@@ -4,12 +4,16 @@ import { BookDetail } from "../../../../../env/type/type";
 import { getBookByIdMainPage } from "@/services/mainPage";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/authProvider";
     
 
 const BookViewPage = () => {
     const [author, setAuthor] = useState(false)
     const searchParams = useSearchParams();
     const id = searchParams.get("id"); 
+    const { user} = useAuth();
+    const isAdmin = user?.role === "Admin";
+    const isEdit = author || isAdmin;
     const [bookDetail, setBookDetail] = useState<BookDetail | null>(null);
     const router = useRouter();
     useEffect(() => {
@@ -63,7 +67,7 @@ const BookViewPage = () => {
                     </div>
                 </div>
                 <div>
-                    {author && (
+                    {isEdit && (
                         <div className="flex gap-2">
                             <Button
                             id="add-chapter-button"

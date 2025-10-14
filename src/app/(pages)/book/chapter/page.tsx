@@ -43,8 +43,6 @@ const CreateChapterPage = () => {
 
         const updatedBook = await getBookById(id || "");
         setChapter(updatedBook.paperPoint.Chapter);
-
-        // Reset form 
         handleReset();
     };
     const handleReset = () => {
