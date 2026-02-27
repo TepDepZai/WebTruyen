@@ -77,7 +77,8 @@ export interface PaginationResponse<T> {
   has_prev: boolean;
   page: number;
   size: number;
-  total_pages: number;
+  totalUsers?: number;
+  totalPages: number;
 }
 export interface ChapterNumber {
   _id: string;

@@ -50,41 +50,42 @@ const DialogAdmin = ({
   }
   const SizeXDialog =
     sizeX === "sm"
-      ? " w-[300px]"
+      ? " w-[90vw] sm:w-[300px]"
       : sizeX === "md"
-        ? " w-[400px]"
+        ? " w-[90vw] sm:w-[400px]"
         : sizeX === "lg"
-          ? " w-[500px]"
-          : " w-[600px]";
+          ? " w-[90vw] sm:w-[500px]"
+          : " w-[90vw] sm:w-[600px]";
   const SizeYDialog =
     sizeY === "sm"
-      ? " h-[300px]"
+      ? " max-h-[80vh]"
       : sizeY === "md"
-        ? " h-[400px]"
+        ? " max-h-[80vh]"
         : sizeY === "lg"
-          ? " h-[500px]"
-          : " h-[600px]";
+          ? " max-h-[85vh]"
+          : " max-h-[90vh]";
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
-      <DialogContent className={` overflow-auto` + SizeXDialog + SizeYDialog}>
+      <DialogContent className={`scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] bg-gradient-to-b from-[#1B1B23] to-[#14141A] border border-[#F5C452]/30 overflow-auto` + SizeXDialog + SizeYDialog}>
         <form onSubmit={onSubmit}>
-          <DialogHeader>
-            <DialogTitle>{title || "Thông báo"}</DialogTitle>
+          <DialogHeader className="border-b border-[#F5C452]/20">
+            <DialogTitle className="text-white text-xl font-bold">{title || "Thông báo"}</DialogTitle>
             {description && (
-              <DialogDescription>{description}</DialogDescription>
+              <DialogDescription className="text-gray-400">{description}</DialogDescription>
             )}
           </DialogHeader>
-          <div className="grid gap-4 py-2">{content}</div>
+          <div className="grid gap-4 py-4">{content}</div>
           {showFooter && (
-            <DialogFooter>
+            <DialogFooter className="border-t border-[#F5C452]/20 pt-4">
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline" className="border-[#F5C452]/40 text-[#F5C452] hover:bg-[#F5C452]/10">Cancel</Button>
               </DialogClose>
               <Button
                 type="submit"
+                className="bg-gradient-to-r from-[#F5C452]/80 to-[#FFD700]/70 hover:from-[#F5C452] hover:to-[#FFD700] text-black font-semibold"
                 onClick={(e) => {
                   e.preventDefault();
                   if (onSubmit) {

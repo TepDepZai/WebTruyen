@@ -3,6 +3,7 @@ const adminAPI = {
     getAllBooks: `${base}/getBookAdmin`,
     deleteBooks: `${base}/deleteBookAdmin`,
     updateBooks: `${base}/updateBookAdmin`,
+    getAllUsers: `${base}/getUserAdmin`,
 };
 
 export default adminAPI;

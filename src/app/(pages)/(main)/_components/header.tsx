@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminIcon } from "@/components/icon";
+import { AdminIcon, UpArrowIcon } from "@/components/icon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,22 +10,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/authProvider";
-import { getCurrentUser, logout } from "@/services/authService";
+import { logout } from "@/services/authService";
 import {
-  ChevronRight,
-  EllipsisVertical,
   LogOutIcon,
   ScanFace,
   Search,
   User,
+  UserPlus,
+  BookPlus,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const Header = () => {
-  const { user, setUser, loading } = useAuth();
+  const { user, setUser } = useAuth();
   const router = useRouter();
   const isLoggedIn = !!user;
   const isAdmin = user?.role === "Admin";
+  const isAuthor = user?.role === "Author";
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -41,139 +45,117 @@ const Header = () => {
     }
   };
 
-
-  const topOptions = [
-    { label: "Top day", path: "/top/day" },
-    { label: "Top week", path: "/top/week" },
-    { label: "Top month", path: "/top/month" },
-  ];
-
-  const genreOptions = [
-    { label: "Manga", path: "/genre/manga" },
-    { label: "Manhua", path: "/genre/manhua" },
-    { label: "Manhwa", path: "/genre/manhwa" },
-    { label: "Cổ tích", path: "/genre/fairy-tale" },
-  ];
-
   return (
-    <header className="h-16 w-full bg-gradient-to-r from-[#52357B] to-[#3B5C7E] border-b border-gray-400 shadow-lg flex items-center justify-between px-6 gap-4">
-      {/* Logo */}
+    <header className="h-16 w-full bg-gradient-to-r from-[#0B0B0E] via-[#14141A] to-[#1B1B23] rounded-b-sm border-b border-[#F5C452]/40 shadow-[0_8px_30px_rgba(0,0,0,0.45)] flex items-center justify-between px-6 gap-4">
       <h1
         onClick={() => router.push("/")}
-        className="text-white font-extrabold text-2xl tracking-wide font-mono drop-shadow-lg select-none cursor-pointer"
+        className={`text-white font-extrabold text-2xl tracking-wide drop-shadow-lg select-none cursor-pointer `}
       >
         Paper Point
       </h1>
-      {/* Top + Genres dropdown */}
-      <div className="flex items-center gap-4">
-        {/* Top Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="p-2 rounded-lg hover:bg-white/10 text-white transition flex items-center gap-1 font-semibold">
-              Top <ChevronRight size={18} />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-44">
-            <DropdownMenuLabel>Top</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {topOptions.map((opt) => (
-              <DropdownMenuItem
-                key={opt.path}
-                onClick={() => router.push(opt.path)}
-              >
-                {opt.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-        {/* Genres Dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="p-2 rounded-lg hover:bg-white/10 text-white transition flex items-center gap-1 font-semibold">
-              Genres <ChevronRight size={18} />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-44">
-            <DropdownMenuLabel>Genres</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {genreOptions.map((opt) => (
-              <DropdownMenuItem
-                key={opt.path}
-                onClick={() => router.push(opt.path)}
-              >
-                {opt.label}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      {/* Search bar */}
-      <div className="flex items-center flex-grow max-w-lg mx-6 rounded-2xl bg-white/90 shadow-inner overflow-hidden border border-gray-200">
-        <input
-          type="search"
-          placeholder="Search..."
-          className="flex-grow px-4 py-2 focus:outline-none text-black bg-transparent placeholder-gray-500"
-        />
-        <button
-          className="px-4 py-3 hover:bg-blue-200 transition"
-          aria-label="Search"
-          title="Search"
+      <div className="flex items-center gap-2">
+        <div
+          className={`relative overflow-hidden transition-all duration-300 ease-out ${showSearch ? "w-64 opacity-100" : "w-0 opacity-0"
+            }`}
         >
-          <Search size={20} />
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+          />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="w-full rounded-full bg-white/90 py-2 pl-9 pr-3 text-sm text-black shadow-[0_8px_24px_rgba(0,0,0,0.15)] outline-none ring-1 ring-black/10 focus:ring-2 focus:ring-white/40"
+          />
+        </div>
+        <button
+          onClick={() => setShowSearch(!showSearch)}
+          className="p-2 rounded-full hover:bg-white/10 text-white transition"
+          aria-expanded={showSearch}
+          aria-label="Toggle search"
+        >
+          <Search size={16} />
         </button>
-      </div>
-      {/* Account menu */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            className="p-2 rounded-full hover:bg-white/10 text-white transition flex items-center"
-            title="Account menu"
-            aria-label="Account menu"
-          >
-            <EllipsisVertical size={22} />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-44">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
+        <DropdownMenu onOpenChange={setIsMenuOpen}>
+          <DropdownMenuTrigger asChild>
+            <button
+              className={`p-2 rounded-full hover:bg-white/10 text-white transition flex items-center font-medium`}
+            >
+              {user?.fullName ? user.fullName : "Account"}
+              <UpArrowIcon
+                className={`!w-5 !h-5 ml-1 transition-transform duration-300 ease-in-out ${isMenuOpen ? 'rotate-180' : ''}`}
+              />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuLabel>
+              {isLoggedIn ? `Hi, ${user?.fullName}` : "Guest"}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
 
-            <>
-              <DropdownMenuItem
-                className="gap-2"
-                onClick={() => router.push("/profile")}
-              >
-                <User size={16} /> Profile
-              </DropdownMenuItem>
+            {/* Author Menu */}
+            {isAuthor && (
+              <>
+                <DropdownMenuItem
+                  className="gap-2"
+                  onClick={() => router.push("/author/books")}
+                >
+                  <BookPlus size={16} /> My Books
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
 
-              {isAdmin && (
+            {/* Admin Menu */}
+            {isAdmin && (
+              <>
                 <DropdownMenuItem
                   className="gap-2"
                   onClick={() => router.push("/admin/user")}
                 >
                   <AdminIcon /> Admin Panel
                 </DropdownMenuItem>
-              )}
+                <DropdownMenuSeparator />
+              </>
+            )}
 
-              <DropdownMenuSeparator />
-
-              {isLoggedIn ? (
+            {/* Common Menu for Logged-in Users */}
+            {isLoggedIn ? (
+              <div>
                 <DropdownMenuItem
-                  className="gap-2 text-red-600 hover:text-red-700"
+                  className="gap-2"
+                  onClick={() => router.push("/profile")}
+                >
+                  <User size={16} /> Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  variant="destructive"
+                  className="gap-2"
                   onClick={handleLogout}
                 >
                   <LogOutIcon size={16} /> Logout
                 </DropdownMenuItem>
-              ) : (
+              </div>
+            ) : (
+              <div>
                 <DropdownMenuItem
-                  className="gap-2 text-green-600 hover:text-green-700"
+                  className="gap-2"
                   onClick={() => router.push("/login")}
                 >
                   <ScanFace size={16} /> Login
                 </DropdownMenuItem>
-              )}
-            </>
-        </DropdownMenuContent>
-      </DropdownMenu>
+                <DropdownMenuItem
+                  variant="destructive"
+                  className="gap-2"
+                  onClick={() => router.push("/register")}
+                >
+                  <UserPlus size={16} /> Register
+                </DropdownMenuItem>
+              </div>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </header>
   );
 };

@@ -1,6 +1,7 @@
 import authAPI from "../../env/authAPI";
 import api from "@/middleware/api";
 import { LoginCredentials, RegisterData} from "../../env/type/type";
+import adminAPI from "../../env/adminAPI";
 
 export const login = async (credentials: LoginCredentials) => {
   const res = await api.post(authAPI.login, credentials);
@@ -16,13 +17,13 @@ export const logout = async () => {
   return res.data;
 };
 export const getCurrentUser = async () => {
-  const res = await api.get(authAPI.getCurrentUser);
+  const res = await api.get(authAPI.me);
   return res.data;
 };
-export const getAllUsers = async (page: number, size: number, search: string = "") => {
+export const getAllUsers = async (page: number, size: number, search: string = "", filter: string = "all") => {
   try {
     const res = await api.get(
-      `${authAPI.getAllUsers}?page=${page}&size=${size}&search=${encodeURIComponent(search)}`
+      `${adminAPI.getAllUsers}?page=${page}&size=${size}&search=${encodeURIComponent(search)}&filter=${filter}`
     );
     return res.data;
   } catch (err: any) {

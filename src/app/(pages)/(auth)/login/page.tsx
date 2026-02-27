@@ -31,6 +31,7 @@ const LoginPage = () => {
             });
             return;
         }
+        setLoading(true);
         try {
             const res = await login({
                 identifier: identifier.trim(),
@@ -52,18 +53,32 @@ const LoginPage = () => {
             } else {
                 setError("Đã xảy ra lỗi khi đăng nhập.");
             }
+        } finally {
+            setLoading(false);
         }
     }
     const reqLoginGoogle = async (token: string) => {
-        const data = await loginWithGoogle(token);
-        if (data.success) {
-            router.push("/");
-        } else {
+        setLoading(true);
+        try {
+            const data = await loginWithGoogle(token);
+            if (data.success) {
+                setUser(data.user);
+                router.push("/");
+            } else {
+                setToast({
+                    title: "Login Failed",
+                    message: "Google login failed. Please try again.",
+                    variant: "error",
+                });
+            }
+        } catch (error: any) {
             setToast({
                 title: "Login Failed",
                 message: "Google login failed. Please try again.",
                 variant: "error",
             });
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -87,8 +102,6 @@ const LoginPage = () => {
             }}>
                 <div className="bg-white w-[450px] rounded-lg shadow-lg p-8">
                     <h2 className="text-xl font-bold text-center mb-6">Sign in to your account</h2>
-
-                    {/* Hiển thị lỗi */}
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                             {error}

@@ -34,10 +34,10 @@ export const AppSearch = (
     };
     return (
         <div className="relative">
-            <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#F5C452]/60" />
             <Input
                 type="text"
-                className={`pl-10 min-w-[15rem] ${className}`}
+                className={`pl-10 min-w-[15rem] bg-[#1B1B23] border-[#F5C452]/30 text-white placeholder:text-gray-500 hover:border-[#F5C452]/50 focus:border-[#F5C452]/70 focus:ring-[#F5C452]/20 transition ${className}`}
                 placeholder={placeholder}
                 value={searchString}
                 onChange={(e) => handleSearch(e.target.value)}

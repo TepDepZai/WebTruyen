@@ -34,9 +34,7 @@ const ProfileMain = () => {
       const res = await updateUser({ fullName: user.fullName.trim() });
       if (res.success) {
         setIsEditing(false);
-        setUser((prev) =>
-          prev ? { ...prev, fullName: res.user.fullName } : prev
-        );
+        setUser(user);
       }
     } catch (error) {
       console.error("Lỗi khi cập nhật user:", error);
@@ -110,9 +108,7 @@ const ProfileMain = () => {
                 type="text"
                 value={user.fullName}
                 onChange={(e) =>
-                  setUser((prev) =>
-                    prev ? { ...prev, fullName: e.target.value } : prev
-                  )
+                  setUser(user)
                 }
                 placeholder="Enter your name"
                 title="Name"
