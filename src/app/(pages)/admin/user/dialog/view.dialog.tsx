@@ -1,6 +1,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import DialogAdmin from "../../components/dialogAdmin";
 
+
 interface ViewUserDialogProps {
   userData: {
     _id: string;
@@ -29,28 +30,33 @@ const ViewUserDialog = ({ userData }: ViewUserDialogProps) => {
     router.push(`/admin/user?${params.toString()}`, { scroll: false });
   };
 
-  const timeAgo = (date?: string) => {
-    if (!date) return "—";
-    const now = new Date();
-    const past = new Date(date);
-    const diff = Math.floor((now.getTime() - past.getTime()) / 1000);
-
-    if (diff < 5) return "just now";
-    if (diff < 60) return `${diff} seconds ago`;
-    if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
-    if (diff < 604800) return `${Math.floor(diff / 86400)} days ago`;
-    if (diff < 2592000) return `${Math.floor(diff / 604800)} weeks ago`;
-    if (diff < 31536000) return `${Math.floor(diff / 2592000)} months ago`;
-    return `${Math.floor(diff / 31536000)} years ago`;
-  };
 
   const user = userData.find((u) => u._id === userId);
+
+  const formatDateTime = (value?: string) => {
+    if (!value) {
+      return "—";
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return "—";
+    }
+
+    return new Intl.DateTimeFormat("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
+  };
 
   return (
     <DialogAdmin
       sizeX="xl"
-      sizeY="xl"
+      sizeY="lg"
       title="View User"
       description="Chi tiết thông tin người dùng"
       open={open}
@@ -59,59 +65,57 @@ const ViewUserDialog = ({ userData }: ViewUserDialogProps) => {
       content={
         user ? (
           <div className="space-y-6">
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col items-center gap-3 rounded-2xl border border-[#F5C452]/20 bg-gradient-to-br from-[#1a1a1a]/70 to-[#0f0f0f]/70 p-5">
               {user.avatar ? (
                 <img
                   src={user.avatar}
                   alt="Avatar"
-                  className="w-24 h-24 rounded-full border shadow-md"
+                  className="h-24 w-24 rounded-full border-2 border-[#F5C452]/40 shadow-lg"
                 />
               ) : (
-                <div className="w-24 h-24 rounded-full flex items-center justify-center bg-gray-200 text-gray-500 text-xl font-bold">
+                <div className="flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#F5C452]/30 bg-gradient-to-br from-[#F5C452]/20 to-[#FFD700]/10 text-2xl font-bold text-[#F5C452]">
                   {user.fullName?.charAt(0) || "?"}
                 </div>
               )}
               <div className="text-center">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-white">
                   {user.fullName || "—"}
                 </h2>
-                <p className="text-sm text-gray-500">{user.email}</p>
+                <p className="text-sm text-gray-400">{user.email || "—"}</p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <span
+                  className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                    user.role === "SuperAdmin"
+                      ? "border-purple-500/30 bg-purple-500/20 text-purple-400"
+                      : user.role === "Admin"
+                      ? "border-red-500/30 bg-red-500/20 text-red-400"
+                      : user.role === "Moderator"
+                      ? "border-emerald-500/30 bg-emerald-500/20 text-emerald-400"
+                      : user.role === "Author"
+                      ? "border-blue-500/30 bg-blue-500/20 text-blue-400"
+                      : "border-gray-500/30 bg-gray-500/20 text-gray-300"
+                  }`}
+                >
+                  {user.role || "—"}
+                </span>
+                <span
+                  className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                    user.isActive
+                      ? "border-green-500/30 bg-green-500/20 text-green-400"
+                      : "border-yellow-500/30 bg-yellow-500/20 text-yellow-400"
+                  }`}
+                >
+                  {user.isActive ? "Active" : "Inactive"}
+                </span>
               </div>
             </div>
 
-            <div className="grid gap-3 text-sm">
-              <Field label="User ID" value={user._id} />
-              <Field label="User Name" value={user.userName || "—"} />
-              <Field
-                label="Role"
-                value={
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      user.role === "Admin"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}
-                  >
-                    {user.role || "—"}
-                  </span>
-                }
-              />
-              <Field
-                label="State"
-                value={
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      user.isActive
-                        ? "bg-red-100 text-red-600"
-                        : "bg-green-100 text-green-600"
-                    }`}
-                  >
-                    {user.isActive ? "Deactivated" : "Activated"}
-                  </span>
-                }
-              />
-              <Field label="Created At" value={timeAgo(user.createdAt)} />
-              <Field label="Updated At" value={timeAgo(user.updatedAt)} />
+            <div className="grid gap-4 text-sm md:grid-cols-2">
+              <Field label="UserID: " value={user._id} />
+              <Field label="User Name: " value={user.userName || "—"} />
+              <Field label="Created At: " value={formatDateTime(user.createdAt)} />
+              <Field label="Updated At: " value={formatDateTime(user.updatedAt)} />
             </div>
           </div>
         ) : (
@@ -129,9 +133,9 @@ const Field = ({
   label: string;
   value: React.ReactNode;
 }) => (
-  <div className="flex justify-between items-center border-b pb-2">
-    <span className="font-medium text-gray-600">{label}</span>
-    <span className="text-gray-900 text-right">{value}</span>
+  <div className="flex justify-between items-center border-b border-[#F5C452]/20 pb-3">
+    <span className="font-medium text-[#F5C452]/70">{label}</span>
+    <span className="text-gray-200 text-right">{value}</span>
   </div>
 );
 

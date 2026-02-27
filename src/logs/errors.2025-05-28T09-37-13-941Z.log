@@ -85,3 +85,27 @@ ID: 101b8f7a-e17e-46b6-acd0-1a7a2c3b4439 | Time: 2025-09-05T07:48:48.125Z | Name
 ID: a2ac2b5b-7aa8-4bea-a5ce-a8e884b9ef44 | Time: 2025-09-05T09:38:09.680Z | Name: ReferenceError | Cause: searchParams is not defined
 ID: 59dcb498-3c01-424a-803c-e70571df3664 | Time: 2025-09-05T09:38:24.501Z | Name: ReferenceError | Cause: page is not defined
 ID: 4198d94f-5f68-48fe-abfa-b603d9339a78 | Time: 2025-10-14T03:53:14.867Z | Name: Error | Cause: Objects are not valid as a React child (found: object with keys {answer}). If you meant to render a collection of children, use an array instead.
+ID: ad16e5ea-6508-4ee0-85c0-2f1fb3d0d0a6 | Time: 2026-02-24T07:09:20.470Z | Name: ReferenceError | Cause: Button is not defined
+ID: 22aa6c0e-5393-4590-ac0a-5359f424416a | Time: 2026-02-24T07:35:30.254Z | Name: ReferenceError | Cause: Cannot access 'Oswald' before initialization
+ID: ce856f0e-f589-4b38-bc97-498c4c0ddf12 | Time: 2026-02-26T03:38:40.764Z | Name: ReferenceError | Cause: UserPlus is not defined
+ID: 5dc251f9-6ea2-4826-b11f-ec13d03f788a | Time: 2026-02-26T04:40:52.806Z | Name: Error | Cause: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: <Users />. Did you accidentally export a JSX literal instead of a component?
+
+Check the render method of `StatsCard`.
+ID: f7522431-f994-47f3-9755-ea0d9c3f07ec | Time: 2026-02-26T04:41:32.675Z | Name: Error | Cause: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `StatsCard`.
+ID: 42ebfbfa-6e0c-462e-ad7c-b1c1f03aed1d | Time: 2026-02-26T04:52:14.837Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'totalUsers')
+ID: e5b40de9-d4b3-4970-b6fd-833be3b92051 | Time: 2026-02-26T07:12:10.225Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: 9d27678a-bf2f-4639-af62-ba09dd770f0d | Time: 2026-02-26T07:14:07.875Z | Name: Error | Cause: `forbidden()` is experimental and only allowed to be enabled when `experimental.authInterrupts` is enabled.
+ID: f15d922d-b95b-4480-a770-5ad50caa871f | Time: 2026-02-26T07:17:51.673Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: 675dd833-f2eb-4ce1-9ea0-ec65607100b0 | Time: 2026-02-26T07:17:53.399Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: 964e811c-b9cd-4b53-a5f0-e7d16396cf94 | Time: 2026-02-26T07:24:45.037Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: c2e7a266-3d2f-49b5-aaeb-0cdfe8c26d6f | Time: 2026-02-26T07:30:03.413Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: 770d0460-ee82-4f3f-a6e5-6da898a356d4 | Time: 2026-02-26T07:33:13.291Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: b74b7a31-c07f-4ddc-9094-cc5083359a7b | Time: 2026-02-26T07:33:23.950Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: 7ce3e1d8-2fd9-4ff7-8d6a-08b20a54f6ec | Time: 2026-02-26T07:33:37.448Z | Name: TypeError | Cause: Cannot read properties of undefined (reading 'length')
+ID: b7bebfc9-5a53-4900-ab33-68e60cf409ff | Time: 2026-02-26T07:43:07.214Z | Name: ReferenceError | Cause: filterTabs is not defined
+ID: 322f4e01-c646-44dd-8149-459bc3b584f3 | Time: 2026-02-26T07:43:29.783Z | Name: ReferenceError | Cause: filterTabs is not defined
+ID: f9b7ec9f-901f-4a37-99f7-0f5de785653c | Time: 2026-02-27T05:47:58.111Z | Name: ReferenceError | Cause: date is not defined
+ID: 150c0b51-330e-4916-87b5-a0ad75fcbd18 | Time: 2026-02-27T05:48:27.656Z | Name: TypeError | Cause: The "pathObject" argument must be of type Object. Received type string
+ID: ab280f22-ba36-49a7-abcf-81446a2bb854 | Time: 2026-02-27T06:20:14.419Z | Name: ReferenceError | Cause: AssignRoleDialog is not defined
